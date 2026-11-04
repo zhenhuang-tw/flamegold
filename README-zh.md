@@ -1,8 +1,8 @@
 # typst-ntulj
 
-適用於 [Typst](https://typst.app/) 的繁體中文學術論文模板，版面仿《臺大法學論叢》（NTU Law Journal）：中英封面、摘要、目錄、note 式 CSL 引註，以及依語言與類型分組的參考文獻。
+適用於 [Typst](https://typst.app/) 的繁體中文學術論文模板，版面仿《臺大法學論叢》（NTU Law Journal）：中英封面、摘要、目錄、腳註式 CSL 引註，以及依語言與類型分組的參考文獻。
 
-字體、行內樣式、註腳與標題編號沿用 [typst-basic-zh](https://github.com/zhenhuang-tw/typst-basic-zh) 的 `common.typ`，以 submodule 引入，因此與筆記模板外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，目前固定於修正腳註編號的 fork 分支（`fix/note-number-from-footnote-counter`）。
+字體、行內樣式、註腳與標題編號沿用 [typst-basic-zh](https://github.com/zhenhuang-tw/typst-basic-zh) 的 `common.typ`，以 Git 子模組（submodule）引入，因此與筆記模板外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，目前固定於修正腳註編號的 fork 分支（`fix/note-number-from-footnote-counter`）。
 
 ## 環境需求
 
@@ -13,7 +13,7 @@
 
 ## 安裝
 
-在你的論文專案根目錄執行：
+在您的論文專案根目錄執行：
 
 ```powershell
 git submodule add https://github.com/zhenhuang-tw/typst-ntulj.git typst-ntulj
@@ -35,20 +35,20 @@ git clone --recurse-submodules <論文專案網址>
 
 #show: project.with(
   bib: "/ref.bib",                  // 或 "/references.json"
-  csl: read("law-journals-citation-example.csl"),
+  csl: read("law-journals-citation-guide.csl"),
   title: "誠實信用原則與衡平法之性質及功能",
   authors: (name: "何孝元", thanks: "臺灣省立中興大學法律學系系主任。"),
   abstract-zh: [本文探討……],
   keywords-zh: "誠實信用原則、衡平法",
-  title-en: "On Proportionality in Public Law",
+  title-en: "The nature and function of the principle of good faith and equity",
   abstract-en: [This article examines ...],
-  keywords-en: "Public Law, Proportionality",
+  keywords-en: "Principle of good faith, Equity",
 )
 
 = 緒論
 
-本文探討@WangZeJian2025。#footnote[
-  #ncite("LiRenMiao2023", "頁7", prefix: "可參照")。
+王澤鑑教授指出，民法百年來之發展……@WangZeJian2025。至於教育法之相關文獻，則以……#footnote[
+  #ncite(prefix: "參","LiRenMiao2023", "7")。
 ]
 ```
 
@@ -66,18 +66,18 @@ typst compile paper.typ
 
 主函式為 `project`，以 `#show: project.with(...)` 套用。
 
-| 參數                                | 型別             | 預設值 | 說明                                                                    |
-| ----------------------------------- | ---------------- | ------ | ----------------------------------------------------------------------- |
-| `bib`                               | 字串             | —      | **必填**。書目檔路徑，以 `/` 開頭；`.json` 為 CSL-JSON，其餘為 BibTeX。 |
-| `csl`                               | 字串             | —      | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。             |
-| `title`                             | 字串             | `""`   | 中文主標題。                                                            |
-| `title-thanks`、`subtitle`          | 內容／`none`     | `none` | 標題的註解（以腳註呈現）、副標題。                                      |
-| `title-en`                          | 字串／`none`     | `none` | 英文標題。不填則不產生英文封面頁。                                      |
-| `title-en-thanks`、`subtitle-en`    | 內容／`none`     | `none` | 英文標題註解、英文副標題。                                              |
-| `authors`                           | 字串／字典／陣列 | `()`   | 中文作者，寫法同 typst-basic-zh。                                       |
-| `authors-en`                        | 字串／字典／陣列 | `()`   | 英文作者。不填則沿用 `authors`。                                        |
-| `abstract-zh`、`abstract-en`        | 內容             | `[]`   | 中、英文摘要。留空則不輸出。                                            |
-| `keywords-zh`、`keywords-en`        | 字串／`none`     | `none` | 中、英文關鍵字。                                                        |
+| 參數                             | 型別             | 預設值 | 說明                                                                    |
+| -------------------------------- | ---------------- | ------ | ----------------------------------------------------------------------- |
+| `bib`                            | 字串             | —      | **必填**。書目檔路徑，以 `/` 開頭；`.json` 為 CSL-JSON，其餘為 BibTeX。 |
+| `csl`                            | 字串             | —      | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。             |
+| `title`                          | 字串             | `""`   | 中文主標題。                                                            |
+| `title-thanks`、`subtitle`       | 內容／`none`     | `none` | 標題的註解（以腳註呈現）、副標題。                                      |
+| `title-en`                       | 字串／`none`     | `none` | 英文標題。不填則不產生英文封面頁。                                      |
+| `title-en-thanks`、`subtitle-en` | 內容／`none`     | `none` | 英文標題註解、英文副標題。                                              |
+| `authors`                        | 字串／字典／陣列 | `()`   | 中文作者，寫法同 typst-basic-zh。                                       |
+| `authors-en`                     | 字串／字典／陣列 | `()`   | 英文作者。不填則沿用 `authors`。                                        |
+| `abstract-zh`、`abstract-en`     | 內容             | `[]`   | 中、英文摘要。留空則不輸出。                                            |
+| `keywords-zh`、`keywords-en`     | 字串／`none`     | `none` | 中、英文關鍵字。                                                        |
 
 作者寫法：
 
@@ -89,7 +89,7 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 
 ## 引註與參考文獻
 
-使用 note 式 CSL 時，`@key` 會自動產生腳註。
+使用腳註 (note) 式 CSL 時，`@key` 會自動產生腳註。
 
 為配合法學引註常須加註前後短語（例如 _The Bluebook_ 前面要有信號詞，後面常會括註該文主要立場者），本模板預設搭配的 CSL 格式不輸出結尾句號。故若使用 `@key`，將無法產生結尾句號。若需要結尾句號，建議使用 `#ncitef`（footnote + ncite 之意），其參數與 `#ncite` 相同，效果相當於 `#footnote[#ncite(...)。]`。
 
@@ -99,8 +99,8 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 
 ```typ
 #ncite("bibKey")
-#ncite("bibKey", "頁5")
-#ncite("bibKey", "頁5", prefix: "可參照", suffix: "之不同語境")
+#ncite("bibKey", "5")
+#ncite(prefix: "可參照", "bibKey", "5", suffix: "之不同語境。")
 ```
 
 文末參考文獻依語言與類型分組。沒有文獻的分組不輸出；全文沒有任何引用時，整個參考文獻章節都不輸出：

@@ -31,20 +31,20 @@ This repository has submodules of its own (`typst-basic-zh`, `citrus`), so `--re
 
 #show: project.with(
   bib: "/ref.bib",                  // or "/references.json"
-  csl: read("my-style.csl"),
-  title: "論公法上之比例原則",
-  authors: (name: "黃某", thanks: "NTU College of Law"),
+  csl: read("law-journals-citation-guide.csl"),
+  title: "中小學生參與學校行政的保障",
+  authors: (name: "王小明", thanks: "國立臺灣大學法律學系碩士班學生。"),
   abstract-zh: [...],
-  keywords-zh: "公法、比例原則",
-  title-en: "On Proportionality in Public Law",
+  keywords-zh: "比例原則",
+  title-en: "Protection of Primary and High School Students’ Participation in School Administration",
   abstract-en: [...],
-  keywords-en: "Public Law",
+  keywords-en: "Proportionality",
 )
 ```
 
 `bib` is a path starting with `/`, which resolves against the project root; its extension decides the format: `.json` is CSL-JSON, anything else is BibTeX. A leading UTF-8 BOM is stripped. `csl` takes the contents of a note-style CSL file read by your document.
 
-Inside a footnote, cite with `#ncite("key", "頁5", prefix: "...", suffix: "...")` instead of `@key`, which would nest a footnote inside the footnote. `#ncitef(...)` takes the same arguments and is equivalent to `#footnote[#ncite(...)。]`; pass `period: "."` for English sources or `period: none` for no period.
+Inside a footnote, cite with `#ncite("key", "5", prefix: "...", suffix: "...")` instead of `@key`, which would nest a footnote inside the footnote. `#ncitef(...)` takes the same arguments and is equivalent to `#footnote[#ncite(...)。]`; pass `period: "."` for English sources or `period: none` for no period.
 
 The bibliography is grouped into 英文文獻, then 中文文獻 with 期刊論文 and 其他. Empty groups are omitted.
 
