@@ -3,7 +3,7 @@
 // Entry point for academic papers: bilingual cover, abstracts, outline,
 // note-style CSL citations, and a categorized bibliography.
 
-#import "common.typ": *
+#import "typst-basic-zh/common.typ": *
 #import "citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
 
 // ============================================================
