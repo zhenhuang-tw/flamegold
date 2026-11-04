@@ -1,7 +1,11 @@
-// academic-paper.typ
-// 學術論文入口檔：中英封面、摘要、目錄、note 式 CSL 引註、分類參考文獻。
-// Entry point for academic papers: bilingual cover, abstracts, outline,
-// note-style CSL citations, and a categorized bibliography.
+// ntulj.typ
+// 學術論文入口檔（仿《臺大法學論叢》）：中英封面、摘要、目錄、note 式 CSL 引註、分類參考文獻。
+// Entry point for academic papers, modeled on the National Taiwan University Law Journal:
+// bilingual cover, abstracts, outline, note-style CSL citations, and a categorized bibliography.
+//
+// 字體、行內樣式、註腳與標題編號沿用 typst-basic-zh 的 common.typ（submodule）。
+// Fonts, inline styles, footnotes and heading numbering come from common.typ in the
+// typst-basic-zh submodule.
 
 #import "typst-basic-zh/common.typ": *
 #import "citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
@@ -106,8 +110,8 @@
 
   body,
 ) = {
-  assert(bib != none, message: "academic-paper: 請傳入 bib: \"/ref.bib\" / pass bib: \"/ref.bib\"")
-  assert(csl != none, message: "academic-paper: 請傳入 csl: read(\"style.csl\") / pass csl: read(\"style.csl\")")
+  assert(bib != none, message: "ntulj: 請傳入 bib: \"/ref.bib\" / pass bib: \"/ref.bib\"")
+  assert(csl != none, message: "ntulj: 請傳入 csl: read(\"style.csl\") / pass csl: read(\"style.csl\")")
 
   let init = if bib.ends-with(".json") { init-csl-json } else { init-csl }
   // 去除開頭的 UTF-8 BOM：Windows 上部分工具（如 Windows PowerShell 5.1 的
