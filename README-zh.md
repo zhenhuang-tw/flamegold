@@ -111,8 +111,28 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 參考文獻
 一、英文文獻
 二、中文文獻
-  (一) 期刊論文
-  (二) 其他
+  (一) 專書                 book、mvbook、collection
+  (二) 專書論文             incollection
+  (三) 期刊論文             article
+  (四) 未出版之學位論文     thesis、phdthesis、mastersthesis
+  (五) 其他                 其餘類型
+三、日文文獻
+四、德文文獻
+五、法文文獻
+六、其他外文文獻           上列以外的語言
+```
+
+上例為所有分組都有文獻時的樣子；實際編號依有輸出的分組遞補。類型以 BibTeX 的 entry type 判斷（不分大小寫）；使用 CSL-JSON 時，citrus 會先把 `book`、`chapter`、`article-journal`、`thesis` 對應為 `book`、`incollection`、`article`、`phdthesis`。
+
+語言的判斷方式：書目有 `language` 欄位時以它為準，例如 `japanese`、`german`、`french`，或 `ja`、`de`、`fr`；沒有時，標題含漢字者一律視為中文，其餘視為英文。因此**日文文獻必須填寫 `language`**，否則會被歸入中文文獻；德文、法文文獻沒填則會歸入英文文獻。
+
+```bib
+@book{ashibe1992,
+  author   = {芦部信喜},
+  title    = {憲法学},
+  language = {japanese},
+  ...
+}
 ```
 
 ## 行內樣式與編號

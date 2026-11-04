@@ -49,7 +49,9 @@ Inside a footnote, cite with `#ncite("key", "5", prefix: "...", suffix: "...")` 
 
 Running heads start on page 2: even pages show the page number and then `even-header` on the left; odd pages show `title` (without subtitle) and then the page number on the right. They use the sans-serif font at regular weight. The centered page number in the footer stays.
 
-The bibliography is grouped into 英文文獻, then 中文文獻 with 期刊論文 and 其他. Empty groups are omitted.
+The bibliography is grouped by language: 英文文獻, 中文文獻, 日文文獻, 德文文獻, 法文文獻, and 其他外文文獻 for any other language. 中文文獻 is further split by entry type into 專書 (`book`), 專書論文 (`incollection`), 期刊論文 (`article`), 未出版之學位論文 (`thesis`, `phdthesis`, `mastersthesis`), and 其他. Empty groups are omitted.
+
+The language comes from the entry's `language` field, e.g. `japanese`, `german`, `french`. Without it, titles containing Han characters count as Chinese and everything else as English, so Japanese entries must set `language`.
 
 ## Inline styles
 

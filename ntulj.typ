@@ -225,8 +225,16 @@
   body
 
   // ── 參考文獻 / Bibliography ──
-  // 沒有任何文獻的分類不輸出標題；完全沒有引用時，整個參考文獻章節都不輸出
-  // Groups without entries are omitted; with no citations at all, the whole section is omitted
+  // 先依語言、中文文獻再依類型分組。沒有任何文獻的分組不輸出標題；
+  // 完全沒有引用時，整個參考文獻章節都不輸出。
+  // Grouped by language, and Chinese entries also by type. Groups without
+  // entries are omitted; with no citations at all, the whole section is omitted.
+  //
+  // 語言取自 citrus：優先讀書目的 language 欄位（如 japanese、de、fr），
+  // 沒有時，標題含漢字者視為中文，其餘視為英文。日文文獻因此必須填 language。
+  // The language comes from citrus: the entry's language field if present
+  // (e.g. japanese, de, fr); otherwise titles with Han characters count as
+  // Chinese and everything else as English. Japanese entries must set language.
   context {
     let entries = get-cited-entries()
     if entries.len() == 0 { return }
@@ -239,22 +247,47 @@
       ]
     }
 
-    let en = entries.filter(e => e.lang == "en")
-    let zh-journal = entries.filter(e => e.lang == "zh" and e.entry-type == "article")
-    let others = entries.filter(e => {
-      not (e.lang == "en" or (e.lang == "zh" and e.entry-type == "article"))
-    })
+    // 語言分組及其順序 / Language groups, in output order
+    let lang-groups = (
+      ("en", [英文文獻]),
+      ("zh", [中文文獻]),
+      ("ja", [日文文獻]),
+      ("de", [德文文獻]),
+      ("fr", [法文文獻]),
+    )
+    // 中文文獻的類型分組，以 BibTeX 類型比對；CSL-JSON 的 book、chapter、
+    // article-journal、thesis 會由 citrus 對應為 book、incollection、article、phdthesis。
+    // Type groups for Chinese entries, matched on BibTeX types; citrus maps the
+    // CSL-JSON types book, chapter, article-journal and thesis to these.
+    let zh-type-groups = (
+      ([專書], ("book", "mvbook", "collection")),
+      ([專書論文], ("incollection",)),
+      ([期刊論文], ("article",)),
+      ([未出版之學位論文], ("thesis", "phdthesis", "mastersthesis")),
+    )
+    let zh-grouped-types = zh-type-groups.map(g => g.at(1)).flatten()
+    let type-of(e) = lower(e.entry-type)
 
     heading(level: 1, numbering: none, outlined: false)[參考文獻]
     // 無編號的第一層標題不會推進計數器；歸零後，下方分類才會從「一、」「(一)」重新起算
     // An unnumbered level-1 heading does not step the counter; reset it so the groups below restart at 一、 and (一)
     counter(heading).update(0)
 
-    group(2, [英文文獻], en)
-    if zh-journal.len() + others.len() > 0 {
-      heading(level: 2, outlined: false)[中文文獻]
-      group(3, [期刊論文], zh-journal)
-      group(3, [其他], others)
+    for (lang, title) in lang-groups {
+      let items = entries.filter(e => e.lang == lang)
+      if lang != "zh" {
+        group(2, title, items)
+      } else if items.len() > 0 {
+        heading(level: 2, outlined: false, title)
+        for (type-title, types) in zh-type-groups {
+          group(3, type-title, items.filter(e => type-of(e) in types))
+        }
+        group(3, [其他], items.filter(e => type-of(e) not in zh-grouped-types))
+      }
     }
+
+    // 上列以外語言的文獻（例如韓文、義大利文）/ Entries in any other language
+    let known-langs = lang-groups.map(g => g.at(0))
+    group(2, [其他外文文獻], entries.filter(e => e.lang not in known-langs))
   }
 }
