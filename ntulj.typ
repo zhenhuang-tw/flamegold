@@ -102,6 +102,11 @@
   authors: (),
   authors-en: (),
 
+  // ── 頁首 / Running head ──
+  // 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱 "臺大法學論叢"；none 則只輸出頁碼。
+  // Text after the page number in even-page headers, e.g. the journal name; none prints the page number only.
+  even-header: none,
+
   // ── 摘要與關鍵字 / Abstracts and keywords ──
   abstract-zh: [],
   keywords-zh: none, // 例如 "學生參與、民主國原則、正當行政程序、兒童權利公約、兒童陳述意見的權利"
@@ -128,6 +133,24 @@
 
   // 論文段落：首行縮排、行距較寬 / Paper paragraphs: first-line indent, wider leading
   set par(first-line-indent: 2em, leading: 1.2em)
+
+  // 頁首：第一頁不輸出；雙數頁靠左「頁碼　even-header」，單數頁靠右「標題　頁碼」。
+  // 黑體不加粗；font-hei 以 Arial 排英數字，即為無襯線體。頁尾置中頁碼由 common-style 提供，維持不變。
+  // Running head: none on page 1; even pages "number  even-header" on the left, odd pages
+  // "title  number" on the right. Regular-weight sans: font-hei sets Latin text in Arial.
+  // The centered page number in the footer comes from common-style and is kept.
+  set page(header: context {
+    if here().page() > 1 {
+      set text(font: font-hei, weight: "regular", size: 10pt)
+      let number = counter(page).display()
+      let gap = h(2em)
+      if calc.even(counter(page).get().first()) {
+        align(left)[#number#if even-header != none { gap + even-header }]
+      } else {
+        align(right)[#title#gap#number]
+      }
+    }
+  })
 
   // 區塊引用後，迫使下一段恢復首行縮排
   // After a block quote, force the next paragraph to keep its first-line indent

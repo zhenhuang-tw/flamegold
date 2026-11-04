@@ -39,12 +39,15 @@ This repository has submodules of its own (`typst-basic-zh`, `citrus`), so `--re
   title-en: "Protection of Primary and High School Students’ Participation in School Administration",
   abstract-en: [...],
   keywords-en: "Proportionality",
+  even-header: "臺大法學論叢",       // optional
 )
 ```
 
 `bib` is a path starting with `/`, which resolves against the project root; its extension decides the format: `.json` is CSL-JSON, anything else is BibTeX. A leading UTF-8 BOM is stripped. `csl` takes the contents of a note-style CSL file read by your document.
 
 Inside a footnote, cite with `#ncite("key", "5", prefix: "...", suffix: "...")` instead of `@key`, which would nest a footnote inside the footnote. `#ncitef(...)` takes the same arguments and is equivalent to `#footnote[#ncite(...)。]`; pass `period: "."` for English sources or `period: none` for no period.
+
+Running heads start on page 2: even pages show the page number and then `even-header` on the left; odd pages show `title` (without subtitle) and then the page number on the right. They use the sans-serif font at regular weight. The centered page number in the footer stays.
 
 The bibliography is grouped into 英文文獻, then 中文文獻 with 期刊論文 and 其他. Empty groups are omitted.
 

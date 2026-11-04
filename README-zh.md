@@ -43,6 +43,7 @@ git clone --recurse-submodules <論文專案網址>
   title-en: "The nature and function of the principle of good faith and equity",
   abstract-en: [This article examines ...],
   keywords-en: "Principle of good faith, Equity",
+  even-header: "臺大法學論叢",       // 選填：雙數頁頁首
 )
 
 = 緒論
@@ -66,18 +67,19 @@ typst compile paper.typ
 
 主函式為 `project`，以 `#show: project.with(...)` 套用。
 
-| 參數                             | 型別             | 預設值 | 說明                                                                    |
-| -------------------------------- | ---------------- | ------ | ----------------------------------------------------------------------- |
-| `bib`                            | 字串             | —      | **必填**。書目檔路徑，以 `/` 開頭；`.json` 為 CSL-JSON，其餘為 BibTeX。 |
-| `csl`                            | 字串             | —      | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。             |
-| `title`                          | 字串             | `""`   | 中文主標題。                                                            |
-| `title-thanks`、`subtitle`       | 內容／`none`     | `none` | 標題的註解（以腳註呈現）、副標題。                                      |
-| `title-en`                       | 字串／`none`     | `none` | 英文標題。不填則不產生英文封面頁。                                      |
-| `title-en-thanks`、`subtitle-en` | 內容／`none`     | `none` | 英文標題註解、英文副標題。                                              |
-| `authors`                        | 字串／字典／陣列 | `()`   | 中文作者，寫法同 typst-basic-zh。                                       |
-| `authors-en`                     | 字串／字典／陣列 | `()`   | 英文作者。不填則沿用 `authors`。                                        |
-| `abstract-zh`、`abstract-en`     | 內容             | `[]`   | 中、英文摘要。留空則不輸出。                                            |
-| `keywords-zh`、`keywords-en`     | 字串／`none`     | `none` | 中、英文關鍵字。                                                        |
+| 參數                             | 型別               | 預設值 | 說明                                                                    |
+| -------------------------------- | ------------------ | ------ | ----------------------------------------------------------------------- |
+| `bib`                            | 字串               | —      | **必填**。書目檔路徑，以 `/` 開頭；`.json` 為 CSL-JSON，其餘為 BibTeX。 |
+| `csl`                            | 字串               | —      | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。             |
+| `title`                          | 字串               | `""`   | 中文主標題。                                                            |
+| `title-thanks`、`subtitle`       | 內容／`none`       | `none` | 標題的註解（以腳註呈現）、副標題。                                      |
+| `title-en`                       | 字串／`none`       | `none` | 英文標題。不填則不產生英文封面頁。                                      |
+| `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none` | 英文標題註解、英文副標題。                                              |
+| `authors`                        | 字串／字典／陣列   | `()`   | 中文作者，寫法同 typst-basic-zh。                                       |
+| `authors-en`                     | 字串／字典／陣列   | `()`   | 英文作者。不填則沿用 `authors`。                                        |
+| `even-header`                    | 字串／內容／`none` | `none` | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。          |
+| `abstract-zh`、`abstract-en`     | 內容               | `[]`   | 中、英文摘要。留空則不輸出。                                            |
+| `keywords-zh`、`keywords-en`     | 字串／`none`       | `none` | 中、英文關鍵字。                                                        |
 
 作者寫法：
 
@@ -123,12 +125,15 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 
 與 typst-basic-zh 的筆記模板相比：
 
-| 項目     | 筆記（typst-basic-zh） | 論文（本模板）                                      |
-| -------- | ---------------------- | --------------------------------------------------- |
-| 段落     | 不縮排，行距 1.1em     | 首行縮排 2 字，行距 1.2em                           |
-| 首頁     | 標題、作者，其下接目錄 | 中文標題、作者、「<摘要>」、關鍵字                  |
-| 其他前頁 | 無                     | 英文封面與 Abstract（填 `title-en` 時）、獨立目錄頁 |
-| 文末     | 不輸出參考文獻清單     | 分組參考文獻                                        |
+| 項目     | 筆記（typst-basic-zh） | 論文（本模板）                                                            |
+| -------- | ---------------------- | ------------------------------------------------------------------------- |
+| 段落     | 不縮排，行距 1.1em     | 首行縮排 2 字，行距 1.2em                                                 |
+| 首頁     | 標題、作者，其下接目錄 | 中文標題、作者、「<摘要>」、關鍵字                                        |
+| 其他前頁 | 無                     | 英文封面與 Abstract（填 `title-en` 時）、獨立目錄頁                       |
+| 文末     | 不輸出參考文獻清單     | 分組參考文獻                                                              |
+| 頁首     | 無                     | 第一頁不輸出；雙數頁靠左「頁碼　`even-header`」，單數頁靠右「標題　頁碼」 |
+
+頁首使用黑體、不加粗，10pt；英數字為 Arial（無襯線體）。單數頁只輸出主標題 `title`，不含副標題與標題註解。頁尾置中頁碼與筆記模板相同，仍然保留。
 
 ## 從 typst-basic-zh 遷移
 
