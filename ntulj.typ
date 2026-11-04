@@ -104,9 +104,9 @@
 
   // ── 摘要與關鍵字 / Abstracts and keywords ──
   abstract-zh: [],
-  keywords-zh: none, // 例如 "公法、教育法、比例原則"
+  keywords-zh: none, // 例如 "學生參與、民主國原則、正當行政程序、兒童權利公約、兒童陳述意見的權利"
   abstract-en: [],
-  keywords-en: none, // e.g. "Public Law, Education Law"
+  keywords-en: none, // e.g. "Student participation, Principle of the democratic state, Due administrative procedure, Convention on the Rights of the Child, Right of the child to be heard"
 
   body,
 ) = {
