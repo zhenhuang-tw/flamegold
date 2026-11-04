@@ -9,7 +9,7 @@ The Chinese README, [README-zh.md](README-zh.md), is the full manual. This file 
 ## Requirements
 
 1. [Typst](https://github.com/typst/typst#installation) 0.14 or later (required by citrus 0.2.1).
-2. The fonts listed in the typst-basic-zh README.
+2. The fonts listed in the typst-basic-zh README, except TaiwanPearl and Zhuque Fangsong, which only the note-only `#hypo` and `#thought` use.
 
 Typst downloads `@preview/cuti` and `@preview/citegeist` on first compile.
 
@@ -47,6 +47,10 @@ This repository has submodules of its own (`typst-basic-zh`, `citrus`), so `--re
 Inside a footnote, cite with `#ncite("key", "5", prefix: "...", suffix: "...")` instead of `@key`, which would nest a footnote inside the footnote. `#ncitef(...)` takes the same arguments and is equivalent to `#footnote[#ncite(...)。]`; pass `period: "."` for English sources or `period: none` for no period.
 
 The bibliography is grouped into 英文文獻, then 中文文獻 with 期刊論文 and 其他. Empty groups are omitted.
+
+## Inline styles
+
+Of the inline style functions in typst-basic-zh, this template exports only `keyword` and `inquote`. The note-only `very-keyword`, `hypo`, `thought`, and `rightNote` are not available.
 
 ## Migrating from typst-basic-zh
 

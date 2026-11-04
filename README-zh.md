@@ -7,7 +7,7 @@
 ## 環境需求
 
 1. [Typst](https://github.com/typst/typst#installation) 0.14 以上（citrus 0.2.1 要求 0.14）。
-2. 字型同 typst-basic-zh，見其 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#環境需求)。
+2. 字型同 typst-basic-zh，見其 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#環境需求)；但台灣圓體與朱雀仿宋僅供筆記專用的 `#hypo`、`#thought` 使用，本模板不需要。
 
 首次編譯時，Typst 會自動下載 `@preview/cuti` 與 `@preview/citegeist`。
 
@@ -115,7 +115,9 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 
 ## 行內樣式與編號
 
-`keyword`、`very-keyword`、`hypo`、`thought`、`inquote`、`rightNote` 等行內樣式函式，以及標題與編號清單的編號規則，皆來自 typst-basic-zh，本模板一併匯出，用法見其 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#行內樣式函式)。標題編號與 `basic-note.typ` 相同：`=` 為「壹、」，`==` 為「一、」，`===` 為「(一)」。
+本模板只匯出 `keyword`（重點強調）與 `inquote`（行內引用）兩個行內樣式函式，用法見 typst-basic-zh 的 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#行內樣式函式)。筆記專用的 `very-keyword`、`hypo`、`thought`、`rightNote` 不提供；從舊版遷移的論文若用到它們，請改寫或自行定義。
+
+標題與編號清單的編號規則同樣來自 typst-basic-zh。標題編號與 `basic-note.typ` 相同：`=` 為「壹、」，`==` 為「一、」，`===` 為「(一)」。
 
 ## 版面
 
