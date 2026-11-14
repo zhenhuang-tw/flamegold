@@ -140,6 +140,44 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 }
 ```
 
+### BibTeX 的非標準類型：以 `mark` 指定
+
+citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdiction`、`@legislation`、`@standard`、`@newspaper` 等非標準類型，會一律當成 `unknown`。CSL 因此找不到對應的格式，註腳會出現 `[CSL STYLE ERROR: reference with no printed form.]`。
+
+這類文獻請改用 `@misc`，並以 `mark` 欄位指定類型：
+
+```bib
+@misc{khh_case,
+  mark    = {LEGAL_CASE},
+  title   = {<span class="nocase">State v. K.H.-H.</span>},
+  journal = {Wn.2d},
+  volume  = {185},
+  pages   = {745},
+  date    = {2016-06-23},
+}
+
+@misc{tw_case,
+  mark      = {LEGAL_CASE},
+  title     = {某案},
+  authority = {最高法院},
+  number    = {112年度台上字第1號},
+  genre     = {民事判決},
+  date      = {2023-05-01},
+}
+```
+
+| `mark`        | 類型     |
+| ------------- | -------- |
+| `LEGAL_CASE`  | 裁判     |
+| `LEGISLATION` | 法規     |
+| `REGULATION`  | 行政命令 |
+| `N`           | 報紙     |
+| `S`           | 標準     |
+
+`mark` 的值不分大小寫。網頁請用 `@online`，citegeist 不認得 `@webpage`。
+
+出處：citrus 中文文件〈需要 `mark` 字段的文献类型〉，見 [`examples/example-zh.typ`](https://github.com/pku-typst/citeproc-typst/blob/main/examples/example-zh.typ)；`REGULATION` 見 citrus [README](https://github.com/pku-typst/citeproc-typst#unsupported-types-require-mark-field)。
+
 ## 行內樣式與編號
 
 入口檔 `lib.typ` 只匯出主函式 `paper`、引註函式 `ncite`、`ncitef`、字型名稱 `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong`，以及 `keyword`（重點強調）與 `inquote`（行內引用）兩個行內樣式函式；其餘名稱屬內部實作，日後可能變動。行內樣式函式的用法見 typst-basic-zh 的 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#行內樣式函式)。筆記專用的 `very-keyword`、`hypo`、`thought`、`rightNote` 不提供；從舊版遷移的論文若用到它們，請改寫或自行定義。
