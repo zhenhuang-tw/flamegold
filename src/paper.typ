@@ -373,7 +373,7 @@
     if keywords-zh != none {
       v(0.5em)
       let style = layout.keywords
-      let label = text(font: style.label-font, weight: "bold")[關鍵字：]
+      let label = text(font: style.label-font, weight: style.label-weight)[關鍵字：]
       let words = if style.body-font == none { keywords-zh } else { text(font: style.body-font, keywords-zh) }
       keywords-line(label, words)
     }
