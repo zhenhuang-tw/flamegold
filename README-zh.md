@@ -67,19 +67,20 @@ typst compile paper.typ
 
 主函式為 `paper`，以 `#show: paper.with(...)` 套用。
 
-| 參數                             | 型別               | 預設值 | 說明                                                           |
-| -------------------------------- | ------------------ | ------ | -------------------------------------------------------------- |
-| `bib`                            | path               | —      | **必填**。`path("ref.bib")`；依內容判斷為 CSL-JSON 或 BibTeX。 |
-| `csl`                            | 字串               | —      | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。    |
-| `title`                          | 字串               | `""`   | 中文主標題。                                                   |
-| `title-thanks`、`subtitle`       | 內容／`none`       | `none` | 標題的註解（以腳註呈現）、副標題。                             |
-| `title-en`                       | 字串／`none`       | `none` | 英文標題。不填則不產生英文封面頁。                             |
-| `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none` | 英文標題註解、英文副標題。                                     |
-| `authors`                        | 字串／字典／陣列   | `()`   | 中文作者，寫法同 typst-basic-zh。                              |
-| `authors-en`                     | 字串／字典／陣列   | `()`   | 英文作者。不填則沿用 `authors`。                               |
-| `even-header`                    | 字串／內容／`none` | `none` | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。 |
-| `abstract-zh`、`abstract-en`     | 內容               | `[]`   | 中、英文摘要。留空則不輸出。                                   |
-| `keywords-zh`、`keywords-en`     | 字串／`none`       | `none` | 中、英文關鍵字。                                               |
+| 參數                             | 型別               | 預設值  | 說明                                                           |
+| -------------------------------- | ------------------ | ------- | -------------------------------------------------------------- |
+| `bib`                            | path               | —       | **必填**。`path("ref.bib")`；依內容判斷為 CSL-JSON 或 BibTeX。 |
+| `csl`                            | 字串               | —       | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。    |
+| `title`                          | 字串               | `""`    | 中文主標題。                                                   |
+| `title-thanks`、`subtitle`       | 內容／`none`       | `none`  | 標題的註解（以腳註呈現）、副標題。                             |
+| `title-en`                       | 字串／`none`       | `none`  | 英文標題。不填則不產生英文封面頁。                             |
+| `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none`  | 英文標題註解、英文副標題。                                     |
+| `authors`                        | 字串／字典／陣列   | `()`    | 中文作者，寫法同 typst-basic-zh。                              |
+| `authors-en`                     | 字串／字典／陣列   | `()`    | 英文作者。不填則沿用 `authors`。                               |
+| `even-header`                    | 字串／內容／`none` | `none`  | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。 |
+| `list-cases`                     | 布林值             | `false` | 是否將裁判列入參考文獻。                                       |
+| `abstract-zh`、`abstract-en`     | 內容               | `[]`    | 中、英文摘要。留空則不輸出。                                   |
+| `keywords-zh`、`keywords-en`     | 字串／`none`       | `none`  | 中、英文關鍵字。                                               |
 
 作者寫法：
 
@@ -122,7 +123,11 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
   (五) 其他                 其餘類型
 ```
 
-上例為所有分組都有文獻時的樣子；實際編號依有輸出的分組遞補。類型以 BibTeX 的 entry type 判斷（不分大小寫）；使用 CSL-JSON 時，citrus 會先把 `book`、`chapter`、`article-journal`、`thesis` 對應為 `book`、`incollection`、`article`、`phdthesis`。
+上例為所有分組都有文獻時的樣子；實際編號依有輸出的分組遞補。
+
+裁判原則上不列入參考文獻：CSL-JSON 中 `type` 為 `legal_case`，或 BibTeX 中標示 `mark = {LEGAL_CASE}` 的文獻，只出現在註腳。若要列入，請傳入 `list-cases: true`，裁判會依語言列入各分組，中文裁判列於「其他」。
+
+類型以 BibTeX 的 entry type 判斷（不分大小寫）；使用 CSL-JSON 時，citrus 會先把 `book`、`chapter`、`article-journal`、`thesis` 對應為 `book`、`incollection`、`article`、`phdthesis`。
 
 語言的判斷方式：書目有 `language` 欄位時以它為準，例如 `japanese`、`german`、`french`，或 `ja`、`de`、`fr`；沒有時，標題含漢字者一律視為中文，其餘視為英文。因此**日文文獻必須填寫 `language`**，否則會被歸入中文文獻；德文、法文文獻沒填則會歸入英文文獻。
 

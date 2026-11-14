@@ -100,6 +100,22 @@
 }
 
 // ============================================================
+// § 裁判之判斷 / Detecting cases
+// ============================================================
+// CSL-JSON 的 type 為 legal_case，或 BibTeX 以 mark = {LEGAL_CASE} 標示者（citegeist
+// 不認得 @case 等類型，見 README-zh）。
+// A CSL-JSON entry of type legal_case, or a BibTeX entry marked with
+// mark = {LEGAL_CASE} (citegeist does not recognize @case and similar types).
+#let is-case(e) = {
+  let fields = e.fields
+  let mark = fields.at("mark", default: none)
+  (
+    fields.at("csl-type", default: none) == "legal_case"
+      or (mark != none and upper(str(mark)) == "LEGAL_CASE")
+  )
+}
+
+// ============================================================
 // § 主模板函式
 // § Main template function
 // ============================================================
@@ -135,6 +151,12 @@
   // 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱 "臺大法學論叢"；none 則只輸出頁碼。
   // Text after the page number in even-page headers, e.g. the journal name; none prints the page number only.
   even-header: none,
+
+  // ── 參考文獻 / Bibliography ──
+  // 裁判原則上不列入參考文獻；設為 true 時，依語言列入各分組（中文裁判列於「其他」）。
+  // Cases are left out of the bibliography by default; when true, they are listed
+  // in their language group (Chinese cases under 其他).
+  list-cases: false,
 
   // ── 摘要與關鍵字 / Abstracts and keywords ──
   abstract-zh: [],
@@ -267,10 +289,12 @@
 
   // ── 參考文獻 / Bibliography ──
   // 先依語言、中文文獻再依類型分組；外文文獻在前，中文文獻在後。沒有任何文獻的
-  // 分組不輸出標題；完全沒有引用時，整個參考文獻章節都不輸出。
+  // 分組不輸出標題；完全沒有引用時，整個參考文獻章節都不輸出。除非 list-cases 為 true，
+  // 裁判不列入。
   // Grouped by language, foreign-language groups first and Chinese last, and
   // Chinese entries also by type. Groups without entries are omitted; with no
-  // citations at all, the whole section is omitted.
+  // citations at all, the whole section is omitted. Cases are left out unless
+  // list-cases is true.
   //
   // 語言取自 citrus：優先讀書目的 language 欄位（如 japanese、de、fr），
   // 沒有時，標題含漢字者視為中文，其餘視為英文。日文文獻因此必須填 language。
@@ -279,6 +303,7 @@
   // Chinese and everything else as English. Japanese entries must set language.
   context {
     let entries = get-cited-entries()
+    if not list-cases { entries = entries.filter(e => not is-case(e)) }
     if entries.len() == 0 { return }
 
     let group(level, title, items) = if items.len() > 0 {
