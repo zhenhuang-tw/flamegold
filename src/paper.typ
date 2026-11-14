@@ -5,11 +5,16 @@
 // bilingual cover, abstracts, outline, note-style CSL citations, and a categorized bibliography.
 // lib.typ decides the public interface; documents should import lib.typ, not this file.
 //
-// 字體、行內樣式、註腳與標題編號沿用 yuhina 套件（@local/yuhina）。
-// Fonts, inline styles, footnotes and heading numbering come from the yuhina
-// package (@local/yuhina).
+// 排版規則、註腳與標題編號沿用 yuhina 套件（@local/yuhina），字型則改用 fonts.typ
+// 中加上替補字型的版本。
+// Style rules, footnotes and heading numbering come from the yuhina package
+// (@local/yuhina); fonts come from fonts.typ, which adds fallbacks.
 
-#import "@local/yuhina:0.1.0": *
+#import "@local/yuhina:0.1.0": (
+  document-style, figure-style, footnote-style, heading-style, list-style, normalize-authors, page-style,
+  par-style, plain-links, quote-style, ref-style, render-authors, text-style,
+)
+#import "fonts.typ": font-hei, font-kai, font-song
 // path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
 #assert(
   sys.version >= version(0, 15, 0),
@@ -98,6 +103,29 @@
   while kept.len() > 0 and kept.last() == [ ] { kept = kept.slice(0, -1) }
   kept.join()
 }
+
+// ============================================================
+// § 標題區塊 / Title block
+// ============================================================
+// 與 yuhina 的 title-block 相同，但使用 fonts.typ 的黑體，以便替補字型生效。
+// The same as yuhina's title-block, but with the sans stack from fonts.typ so
+// that its fallbacks apply.
+#let title-block(title, title-thanks: none, subtitle: none, authors: ()) = align(center)[
+  #block(
+    text(font: font-hei, weight: 700, size: 1.75em)[
+      #title#if title-thanks != none and title-thanks != "" { footnote(title-thanks) }
+    ],
+  )
+
+  #if subtitle != none and subtitle != "" [
+    #v(0.5em)
+    #block(text(font: font-hei, weight: "bold", size: 1.25em, subtitle))
+  ]
+
+  #v(1em)
+
+  #render-authors(authors)
+]
 
 // ============================================================
 // § 裁判之判斷 / Detecting cases
@@ -214,18 +242,29 @@
   // auto-links would link each whole footnote to the bibliography
   show: init.with(data, csl, locales: (:), auto-links: false)
 
-  show: common-style.with(title: title, authors: authors)
+  // 等同 yuhina 的 common-style，但各規則改傳入 fonts.typ 的字型
+  // Equivalent to yuhina's common-style, with the fonts from fonts.typ
+  show: document-style.with(title: title, authors: authors)
+  show: page-style
+  show: text-style.with(font: font-song)
+  show: par-style
+  show: quote-style.with(font: font-kai)
+  show: list-style
+  show: figure-style.with(font: font-kai)
+  show: footnote-style.with(font: font-song, label-font: font-hei)
+  show: heading-style.with(font: font-hei)
+  show: ref-style
 
   // 論文段落：首行縮排、行距較寬 / Paper paragraphs: first-line indent, wider leading
   set par(first-line-indent: 2em, leading: 1.2em)
 
   // 頁首：第一頁不輸出；雙數頁靠左「頁碼　even-header」，單數頁靠右「標題　頁碼」；
   // 標題只取換行前的第一行。
-  // 黑體不加粗；font-hei 以 Arial 排英數字，即為無襯線體。頁尾置中頁碼由 common-style 提供，維持不變。
+  // 黑體不加粗；font-hei 以 Arial 排英數字，即為無襯線體。頁尾置中頁碼由 page-style 提供，維持不變。
   // Running head: none on page 1; even pages "number  even-header" on the left, odd pages
   // "title  number" on the right, with only the first line of the title.
   // Regular-weight sans: font-hei sets Latin text in Arial.
-  // The centered page number in the footer comes from common-style and is kept.
+  // The centered page number in the footer comes from page-style and is kept.
   let running-title = first-line(title)
   set page(header: context {
     if here().page() > 1 {

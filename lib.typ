@@ -9,7 +9,8 @@
 // 主函式與引註函式 / Main function and citation functions
 #import "src/paper.typ": ncite, ncitef, paper
 
-// 行內樣式與字型，沿用 yuhina / Inline styles and fonts from yuhina
-#import "@local/yuhina:0.1.0": (
-  font-fsong, font-hei, font-kai, font-song, font-yuan, inquote, keyword,
-)
+// 字型（含替補字型）與楷體的行內引用 / Fonts (with fallbacks) and Kai inline quoting
+#import "src/fonts.typ": font-fsong, font-hei, font-kai, font-song, font-yuan, inquote
+
+// 重點強調，沿用 yuhina / Emphasis from yuhina
+#import "@local/yuhina:0.1.0": keyword
