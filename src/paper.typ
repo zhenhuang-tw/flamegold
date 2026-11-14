@@ -13,10 +13,11 @@
 // (@local/yuhina); fonts come from fonts.typ, which adds fallbacks.
 
 #import "@local/yuhina:0.1.0": (
-  document-style, figure-style, footnote-style, heading-style, list-style, normalize-authors, page-style,
+  document-style, figure-style, heading-style, list-style, normalize-authors, page-style,
   par-style, plain-links, quote-style, render-authors, text-style,
 )
 #import "fonts.typ": font-hei, font-kai, font-song
+#import "footnote.typ": footnote-style
 #import "heading.typ": heading-numbering, ref-style
 #import "preset.typ": resolve-preset
 // path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
@@ -274,8 +275,9 @@
   // auto-links would link each whole footnote to the bibliography
   show: init.with(data, csl, locales: (:), auto-links: false)
 
-  // 等同 yuhina 的 common-style，但各規則改傳入 fonts.typ 的字型
-  // Equivalent to yuhina's common-style, with the fonts from fonts.typ
+  // 等同 yuhina 的 common-style，但各規則改傳入 fonts.typ 的字型與 preset 的設定
+  // Equivalent to yuhina's common-style, with the fonts from fonts.typ and the
+  // preset's settings
   show: document-style.with(title: title, authors: authors)
   show: page-style
   show: text-style.with(font: font-song)
@@ -283,8 +285,15 @@
   show: quote-style.with(font: font-kai)
   show: list-style
   show: figure-style.with(font: font-kai)
-  show: footnote-style.with(font: font-song, label-font: font-hei)
-  show: heading-style.with(font: font-hei)
+  show: footnote-style.with(
+    font: font-song,
+    label-font: font-hei,
+    size: layout.footnote.size,
+    line-height: layout.footnote.line-height,
+  )
+  show: heading-style.with(font: layout.heading.font)
+  // preset 的標題粗細；各層字級見摘要標題的規則之後 / The preset's heading weight; sizes come after the abstract heading rule
+  show heading: set text(weight: layout.heading.weight)
   show: heading-numbering // 第六層「①」/ Sixth level ①
   show: ref-style
 
@@ -330,6 +339,17 @@
     center,
     if layout.abstract-title == none { it.body } else { layout.abstract-title },
   )
+
+  // preset 的各層標題字級。須寫在摘要標題的規則之後：較晚定義的 show 規則先套用，
+  // 字級才會在摘要標題改寫之前生效。
+  // The preset's per-level heading sizes. This must come after the abstract
+  // heading rule: show rules defined later apply first, so the size takes
+  // effect before the abstract heading is rewritten.
+  show heading: it => {
+    let size = layout.heading.sizes.at(it.level - 1, default: none)
+    set text(size: size) if size != none
+    it
+  }
 
   let authors-arr = normalize-authors(authors)
   let authors-en-arr = normalize-authors(authors-en)

@@ -28,6 +28,14 @@
   // lines align with the first keyword, otherwise the line is indented like
   // body text
   keywords: (label-font: font-hei, body-font: none, hanging: false),
+  // 標題：字型、粗細，以及第一層起各層的字級（未列出的層級沿用內文字級）
+  // Headings: font, weight, and font sizes from level 1 down (levels not listed
+  // keep the body size)
+  heading: (font: font-hei, weight: "bold", sizes: ()),
+  // 註腳：字級與行高（相鄰基線的距離）；none 沿用 yuhina 的設定
+  // Footnotes: font size and line height (distance between baselines); none
+  // keeps yuhina's settings
+  footnote: (size: none, line-height: none),
   // 參考文獻分組的順序；"other" 為其他外文 / Order of bibliography groups; "other" is any other language
   bib-order: ("en", "ja", "de", "fr", "other", "zh"),
 )
@@ -41,6 +49,20 @@
       even-header: "臺大法學論叢",
       abstract-title: text(font: font-kai, size: 13pt, weight: "regular", "<摘要>"),
       keywords: (label-font: font-kai, body-font: font-kai, hanging: true),
+    ),
+  // 《臺北大學法學論叢》/ Taipei University Law Review
+  // 依該刊〈投稿論文參考格式〉：標題「壹、」為標楷體 18 級、「一、」為標楷體 14 級，其餘
+  // 標題為標楷體；引註為新細明體 9 級、最小行高 12pt；中日文參考文獻在前。「級」即 Word
+  // 的點（pt）。
+  // Following the review's submission guidelines: 壹、 headings in Kai at 18pt,
+  // 一、 headings in Kai at 14pt, other headings in Kai; footnotes in Ming at
+  // 9pt with a 12pt minimum line height; Chinese and Japanese references first.
+  ntpu: generic
+    + (
+      even-header: "臺北大學法學論叢",
+      heading: (font: font-kai, weight: "regular", sizes: (18pt, 14pt)),
+      footnote: (size: 9pt, line-height: 12pt),
+      bib-order: ("zh", "ja", "en", "de", "fr", "other"),
     ),
 )
 
