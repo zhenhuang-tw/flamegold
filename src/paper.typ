@@ -79,6 +79,27 @@
   )#period]
 
 // ============================================================
+// § 頁首用標題 / Title for the running head
+// ============================================================
+// 只取第一行：字串取第一個換行前的部分；內容取第一個 linebreak（\）前的部分，
+// 並去掉結尾空白，以免長標題在頁首折成兩行。
+// Keep only the first line: for a string, the part before the first newline; for
+// content, the part before the first linebreak (\), without trailing spaces, so
+// that a long title does not wrap the running head onto two lines.
+#let first-line(title) = {
+  if type(title) == str { return title.split("\n").first().trim() }
+  if type(title) != content { return title }
+  if title.func() == linebreak { return none }
+  if not title.has("children") { return title }
+  let children = title.children
+  let cut = children.position(c => c.func() == linebreak)
+  if cut == none { return title }
+  let kept = children.slice(0, cut)
+  while kept.len() > 0 and kept.last() == [ ] { kept = kept.slice(0, -1) }
+  kept.join()
+}
+
+// ============================================================
 // § 主模板函式
 // § Main template function
 // ============================================================
@@ -151,11 +172,14 @@
   // 論文段落：首行縮排、行距較寬 / Paper paragraphs: first-line indent, wider leading
   set par(first-line-indent: 2em, leading: 1.2em)
 
-  // 頁首：第一頁不輸出；雙數頁靠左「頁碼　even-header」，單數頁靠右「標題　頁碼」。
+  // 頁首：第一頁不輸出；雙數頁靠左「頁碼　even-header」，單數頁靠右「標題　頁碼」；
+  // 標題只取換行前的第一行。
   // 黑體不加粗；font-hei 以 Arial 排英數字，即為無襯線體。頁尾置中頁碼由 common-style 提供，維持不變。
   // Running head: none on page 1; even pages "number  even-header" on the left, odd pages
-  // "title  number" on the right. Regular-weight sans: font-hei sets Latin text in Arial.
+  // "title  number" on the right, with only the first line of the title.
+  // Regular-weight sans: font-hei sets Latin text in Arial.
   // The centered page number in the footer comes from common-style and is kept.
+  let running-title = first-line(title)
   set page(header: context {
     if here().page() > 1 {
       set text(font: font-hei, weight: "regular", size: 10pt)
@@ -164,7 +188,7 @@
       if calc.even(counter(page).get().first()) {
         align(left)[#number#if even-header != none { gap + even-header }]
       } else {
-        align(right)[#title#gap#number]
+        align(right)[#running-title#gap#number]
       }
     }
   })
