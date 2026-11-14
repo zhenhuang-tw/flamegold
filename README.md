@@ -30,7 +30,7 @@ See the Chinese README, [README-zh.md](README-zh.md) as the full manual.
 
 ## Migrating from typst-basic-zh
 
-Replace `#import "typst-basic-zh/academic-paper.typ": *` with `#import "typst-ntulj/ntulj.typ": *`. `project`, `ncite`, and `ncitef` take the same arguments as before.
+Replace `#import "typst-basic-zh/academic-paper.typ": *` with `#import "typst-ntulj/ntulj.typ": *`. The main function is now called `paper` instead of `project`; `ncite` and `ncitef` are unchanged.
 
 ## Updating the submodule
 

@@ -80,7 +80,7 @@
 // § 主模板函式
 // § Main template function
 // ============================================================
-#let project(
+#let paper(
   // ── 引註資料（必填）/ Citation data (required) ──
   // bib：書目檔，以 path() 傳入，例如 bib: path("ref.bib")。path() 在呼叫端的檔案中
   //   解析路徑，因此相對路徑以你的文件為準。格式依檔案內容判斷：以「[」或「{」開頭者

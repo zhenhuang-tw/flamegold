@@ -33,7 +33,7 @@ git clone --recurse-submodules <論文專案網址>
 ```typ
 #import "typst-ntulj/ntulj.typ": *
 
-#show: project.with(
+#show: paper.with(
   bib: path("ref.bib"),             // 或 path("references.json")
   csl: read("law-journals-citation-guide.csl"),
   title: "誠實信用原則與衡平法之性質及功能",
@@ -65,7 +65,7 @@ typst compile paper.typ
 
 ## 參數說明
 
-主函式為 `project`，以 `#show: project.with(...)` 套用。
+主函式為 `paper`，以 `#show: paper.with(...)` 套用。
 
 | 參數                             | 型別               | 預設值 | 說明                                                           |
 | -------------------------------- | ------------------ | ------ | -------------------------------------------------------------- |
@@ -162,7 +162,7 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 ### 原本匯入 `typst-basic-zh/academic-paper.typ`
 
 1. 依「安裝」一節加入本 submodule。
-2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "typst-ntulj/ntulj.typ": *`。`project`、`ncite`、`ncitef` 的參數都不變。
+2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "typst-ntulj/ntulj.typ": *`。主函式由 `project` 改名為 `paper`；`ncite`、`ncitef` 的參數不變。
 3. 若該專案只用來寫論文，可以移除原本的 `typst-basic-zh` submodule：
 
 ```powershell
@@ -173,7 +173,7 @@ git commit -m "chore(tpl): replace typst-basic-zh with typst-ntulj"
 ### 原本使用獨立的 `template_basicPaper.typ`
 
 1. 匯入路徑改為 `typst-ntulj/ntulj.typ`。
-2. 在 `project.with(...)` 中加上 `bib: path("ref.bib")`（或 `path("references.json")`）與 `csl: read("你的樣式.csl")`。
+2. 將 `project.with(...)` 改為 `paper.with(...)`，並加上 `bib: path("ref.bib")`（或 `path("references.json")`）與 `csl: read("你的樣式.csl")`。
 3. 原專案資料夾中的 `template_basicPaper.typ` 可以刪除。
 
 差異：巢狀編號清單的第二層由 `1.` 改為 `(1)`；參考文獻不再重複列出英文文獻、分組編號從「一、」起算、空分組不輸出。
