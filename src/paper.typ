@@ -133,6 +133,17 @@
 ]
 
 // ============================================================
+// § 關鍵字行 / Keywords line
+// ============================================================
+// 凸排：首行不縮排，續行縮排標籤（如「關鍵字：」）的寬度，與第一個關鍵字對齊。
+// Hanging indent: no first-line indent, and wrapped lines indented by the width
+// of the label (e.g. 關鍵字：) so that they align with the first keyword.
+#let keywords-line(label, words) = context {
+  set par(first-line-indent: 0em, hanging-indent: measure(label).width)
+  [#label#words]
+}
+
+// ============================================================
 // § 裁判之判斷 / Detecting cases
 // ============================================================
 // CSL-JSON 的 type 為 legal_case，或 BibTeX 以 mark = {LEGAL_CASE} 標示者（citegeist
@@ -364,17 +375,7 @@
       let style = layout.keywords
       let label = text(font: style.label-font, weight: "bold")[關鍵字：]
       let words = if style.body-font == none { keywords-zh } else { text(font: style.body-font, keywords-zh) }
-      if style.hanging {
-        // 凸排：首行不縮排，續行縮排「關鍵字：」的寬度，與第一個關鍵字對齊
-        // Hanging indent: no first-line indent, and wrapped lines indented by the
-        // width of 關鍵字： so that they align with the first keyword
-        context {
-          set par(first-line-indent: 0em, hanging-indent: measure(label).width)
-          [#label#words]
-        }
-      } else {
-        [#label#words]
-      }
+      keywords-line(label, words)
     }
   }
 
@@ -399,8 +400,7 @@
         #abstract-en
         #if keywords-en != none {
           v(0.3em)
-          text(weight: "bold")[Keywords: ]
-          keywords-en
+          keywords-line(text(weight: "bold")[Keywords: ], keywords-en)
         }
       ]
     }

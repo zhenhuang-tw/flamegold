@@ -19,13 +19,12 @@
   // The Chinese abstract heading; none centers it as an ordinary unnumbered
   // heading, in the same font as the other headings
   abstract-title: none,
-  // 中文關鍵字：label-font 用於「關鍵字：」，body-font 用於各關鍵字（none 沿用內文字型）；
-  // hanging 為 true 時採凸排（首行凸出、續行對齊關鍵字），否則與內文同樣首行縮排
+  // 中文關鍵字：label-font 用於「關鍵字：」，body-font 用於各關鍵字（none 沿用內文字型）。
+  // 各 preset 的關鍵字行一律凸排。
   // Chinese keywords: label-font for 關鍵字：, body-font for the keywords
-  // (none keeps the body font); hanging sets a hanging indent so that wrapped
-  // lines align with the first keyword, otherwise the line is indented like
-  // body text
-  keywords: (label-font: font-hei, body-font: none, hanging: false),
+  // (none keeps the body font). Every preset sets the keywords line with a
+  // hanging indent.
+  keywords: (label-font: font-hei, body-font: none),
   // 標題：字型、粗細，以及第一層起各層的字級（未列出的層級沿用內文字級）
   // Headings: font, weight, and font sizes from level 1 down (levels not listed
   // keep the body size)
@@ -45,7 +44,7 @@
   ntulj: generic
     + (
       abstract-title: text(font: font-kai, size: 13pt, weight: "regular", "<摘要>"),
-      keywords: (label-font: font-kai, body-font: font-kai, hanging: true),
+      keywords: (label-font: font-kai, body-font: font-kai),
     ),
   // 《臺北大學法學論叢》/ Taipei University Law Review
   // 依該刊〈投稿論文參考格式〉：標題「壹、」為標楷體 18 級、「一、」為標楷體 14 級，其餘
