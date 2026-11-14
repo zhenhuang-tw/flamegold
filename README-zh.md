@@ -59,7 +59,9 @@ typst compile paper.typ
 
 `bib` 請用 `path()` 包住書目檔的路徑。`path()` 在你的文件中解析路徑，所以相對路徑以你的文件所在資料夾為準，例如 `path("refs/ref.bib")`；若直接傳字串，路徑會改以模板所在資料夾為準而找不到檔案，因此模板只接受 `path`。
 
-模板依檔案內容判斷格式：以 `[` 或 `{` 開頭者為 CSL-JSON，其餘為 BibTeX，副檔名不影響判斷。檔案開頭的 UTF-8 BOM 會自動去除。
+書目格式由 `bib-format` 指定，可為 `"csl-json"`、`"biblatex"`（含 BibTeX）或 `"hayagriva"`。預設 `auto` 依檔案內容判斷：以 `[` 或 `{` 開頭者為 CSL-JSON，含 `@類型{` 條目者為 BibLaTeX，都不是時會要求你指定；副檔名不影響判斷。檔案開頭的 UTF-8 BOM 會自動去除。
+
+Typst 內建的 Hayagriva YAML 格式目前**不支援**：本模板以 citrus 處理引註，而 citrus 只能解析 BibLaTeX 與 CSL-JSON。指定 `"hayagriva"` 時會報錯。
 
 `csl` 則必須由你的文件自己 `read()` 後傳入內容。
 
@@ -67,20 +69,21 @@ typst compile paper.typ
 
 主函式為 `paper`，以 `#show: paper.with(...)` 套用。
 
-| 參數                             | 型別               | 預設值  | 說明                                                           |
-| -------------------------------- | ------------------ | ------- | -------------------------------------------------------------- |
-| `bib`                            | path               | —       | **必填**。`path("ref.bib")`；依內容判斷為 CSL-JSON 或 BibTeX。 |
-| `csl`                            | 字串               | —       | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。    |
-| `title`                          | 字串               | `""`    | 中文主標題。                                                   |
-| `title-thanks`、`subtitle`       | 內容／`none`       | `none`  | 標題的註解（以腳註呈現）、副標題。                             |
-| `title-en`                       | 字串／`none`       | `none`  | 英文標題。不填則不產生英文封面頁。                             |
-| `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none`  | 英文標題註解、英文副標題。                                     |
-| `authors`                        | 字串／字典／陣列   | `()`    | 中文作者，寫法同 typst-basic-zh。                              |
-| `authors-en`                     | 字串／字典／陣列   | `()`    | 英文作者。不填則沿用 `authors`。                               |
-| `even-header`                    | 字串／內容／`none` | `none`  | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。 |
-| `list-cases`                     | 布林值             | `false` | 是否將裁判列入參考文獻。                                       |
-| `abstract-zh`、`abstract-en`     | 內容               | `[]`    | 中、英文摘要。留空則不輸出。                                   |
-| `keywords-zh`、`keywords-en`     | 字串／`none`       | `none`  | 中、英文關鍵字。                                               |
+| 參數                             | 型別               | 預設值  | 說明                                                                           |
+| -------------------------------- | ------------------ | ------- | ------------------------------------------------------------------------------ |
+| `bib`                            | path               | —       | **必填**。`path("ref.bib")`；依內容判斷為 CSL-JSON 或 BibTeX。                 |
+| `bib-format`                     | `auto`／字串       | `auto`  | `"csl-json"`、`"biblatex"` 或 `"hayagriva"`（目前不支援）；`auto` 依內容判斷。 |
+| `csl`                            | 字串               | —       | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。                    |
+| `title`                          | 字串               | `""`    | 中文主標題。                                                                   |
+| `title-thanks`、`subtitle`       | 內容／`none`       | `none`  | 標題的註解（以腳註呈現）、副標題。                                             |
+| `title-en`                       | 字串／`none`       | `none`  | 英文標題。不填則不產生英文封面頁。                                             |
+| `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none`  | 英文標題註解、英文副標題。                                                     |
+| `authors`                        | 字串／字典／陣列   | `()`    | 中文作者，寫法同 typst-basic-zh。                                              |
+| `authors-en`                     | 字串／字典／陣列   | `()`    | 英文作者。不填則沿用 `authors`。                                               |
+| `even-header`                    | 字串／內容／`none` | `none`  | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。                 |
+| `list-cases`                     | 布林值             | `false` | 是否將裁判列入參考文獻。                                                       |
+| `abstract-zh`、`abstract-en`     | 內容               | `[]`    | 中、英文摘要。留空則不輸出。                                                   |
+| `keywords-zh`、`keywords-en`     | 字串／`none`       | `none`  | 中、英文關鍵字。                                                               |
 
 作者寫法：
 

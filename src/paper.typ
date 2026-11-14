@@ -122,15 +122,20 @@
 #let paper(
   // ── 引註資料（必填）/ Citation data (required) ──
   // bib：書目檔，以 path() 傳入，例如 bib: path("ref.bib")。path() 在呼叫端的檔案中
-  //   解析路徑，因此相對路徑以你的文件為準。格式依檔案內容判斷：以「[」或「{」開頭者
-  //   為 CSL-JSON，其餘為 BibTeX。
+  //   解析路徑，因此相對路徑以你的文件為準。
+  // bib-format：書目格式，"csl-json"、"biblatex"（含 BibTeX）或 "hayagriva"；
+  //   預設 auto 依內容判斷：以「[」或「{」開頭者為 CSL-JSON，含「@類型{」條目者為
+  //   BibLaTeX，都不是則報錯。"hayagriva" 目前不支援，因 citrus 無法解析 YAML。
   // bib: the bibliography file as a path, e.g. bib: path("ref.bib"). path() resolves
-  //   in the caller's file, so relative paths are relative to your document. The
-  //   format is detected from the contents: CSL-JSON if it starts with "[" or "{",
-  //   BibTeX otherwise.
+  //   in the caller's file, so relative paths are relative to your document.
+  // bib-format: "csl-json", "biblatex" (BibTeX included) or "hayagriva"; the
+  //   default, auto, detects it: CSL-JSON if the text starts with "[" or "{",
+  //   BibLaTeX if it has "@type{" entries, an error otherwise. "hayagriva" is not
+  //   supported yet, because citrus cannot parse YAML.
   // csl：由呼叫端讀檔後傳入內容，例如 csl: read("tssci-q1-law.csl")。
   // csl: file contents read by the caller, e.g. csl: read("style.csl").
   bib: none,
+  bib-format: auto,
   csl: none,
 
   // ── 中文標題區 / Chinese title ──
@@ -182,8 +187,28 @@
   // A path has no accessible extension, so detect the format from the contents:
   // CSL-JSON is a JSON array (a few tools write an object), while BibTeX starts
   // with "@" or a comment, never with "[" or "{".
-  let head = data.trim(at: start)
-  let init = if head.starts-with("[") or head.starts-with("{") { init-csl-json } else { init-csl }
+  let formats = ("csl-json", "biblatex", "hayagriva")
+  assert(
+    bib-format == auto or bib-format in formats,
+    message: "ntulj: bib-format 只接受 auto、\"csl-json\"、\"biblatex\"、\"hayagriva\" / bib-format must be auto, \"csl-json\", \"biblatex\" or \"hayagriva\"",
+  )
+  let format = bib-format
+  if format == auto {
+    let head = data.trim(at: start)
+    let entry = regex("@\\s*[A-Za-z]+\\s*[{(]")
+    format = if head.starts-with("[") or head.starts-with("{") {
+      "csl-json"
+    } else if data.contains(entry) {
+      "biblatex"
+    } else {
+      panic("ntulj: 無法判斷書目格式，請以 bib-format 指定 / cannot detect the bibliography format; set bib-format")
+    }
+  }
+  assert(
+    format != "hayagriva",
+    message: "ntulj: 目前不支援 Hayagriva YAML，因 citrus 只能解析 BibLaTeX 與 CSL-JSON；請改用這兩種格式 / Hayagriva YAML is not supported yet, because citrus only parses BibLaTeX and CSL-JSON",
+  )
+  let init = if format == "csl-json" { init-csl-json } else { init-csl }
 
   // auto-links 會把整筆註腳加上連結到參考文獻區
   // auto-links would link each whole footnote to the bibliography
