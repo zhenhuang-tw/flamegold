@@ -2,7 +2,7 @@
 
 適用於 [Typst](https://typst.app/) 的繁體中文學術論文模板，版面仿《臺大法學論叢》（NTU Law Journal）：中英封面、摘要、目錄、腳註式 CSL 引註，以及依語言與類型分組的參考文獻。
 
-字體、行內樣式、註腳與標題編號沿用 [typst-basic-zh](https://github.com/zhenhuang-tw/typst-basic-zh) 的 `common.typ`，以 Git 子模組（submodule）引入，因此與筆記模板外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，目前固定於修正腳註編號的 fork 分支（`fix/note-number-from-footnote-counter`）。
+字體、行內樣式、註腳與標題編號沿用 [typst-basic-zh](https://github.com/zhenhuang-tw/typst-basic-zh) 的 `common.typ`，以 Git 子模組（submodule）引入，因此與筆記模板外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，目前固定於 fork 的 `ntu-adapted` 分支，其中修正了腳註編號、引用頁範圍、姓名變數與 `shorttitle`。
 
 ## 環境需求
 

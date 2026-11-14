@@ -2,7 +2,7 @@
 
 A Traditional Chinese template for journal papers in [Typst](https://typst.app/), modeled on the National Taiwan University Law Journal (臺大法學論叢): bilingual cover, abstracts, outline, note-style CSL citations, and a bibliography grouped by language and type.
 
-Fonts, inline styles, footnotes, and heading numbering come from `common.typ` in [typst-basic-zh](https://github.com/zhenhuang-tw/typst-basic-zh), included as a submodule, so papers look the same as the note templates. Citations use [citrus](https://typst.app/universe/package/citrus), pinned to a fork branch that fixes footnote numbering (`fix/note-number-from-footnote-counter`).
+Fonts, inline styles, footnotes, and heading numbering come from `common.typ` in [typst-basic-zh](https://github.com/zhenhuang-tw/typst-basic-zh), included as a submodule, so papers look the same as the note templates. Citations use [citrus](https://typst.app/universe/package/citrus), pinned to the `ntu-adapted` branch of a fork that fixes footnote numbering, locator ranges, name variables and `shorttitle`.
 
 The Chinese README, [README-zh.md](README-zh.md), is the full manual. This file covers the essentials.
 
