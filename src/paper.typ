@@ -1,5 +1,5 @@
 // src/paper.typ
-// 學術論文模板的實作（仿臺灣法學期刊，版面由 preset.typ 選擇）：中英封面、摘要、目錄、
+// 學術論文模板的實作（仿臺灣法學期刊，版面由 preset.typ 選擇）：中英封面、摘要、目次、
 // note 式 CSL 引註、分類參考文獻。
 // 公開介面由 lib.typ 決定；文件請匯入 lib.typ，不要直接匯入本檔。
 // Implementation of the paper template, modeled on Taiwanese law journals with
@@ -408,14 +408,15 @@
     pagebreak()
   }
 
-  // ── 目錄（獨立一頁）/ Table of contents (own page) ──
+  // ── 目次（獨立一頁）/ Table of contents (own page) ──
+  // 標題依法學期刊慣例為「目次」，各 preset 相同 / Titled 目次, as law journals do, in every preset
   // depth: 3 只收錄到「(一)」層 / depth: 3 stops at the "(one)" level
   // target 只查詢 outlined 的標題：參考文獻的分組標題在 context 中產生，若一併查詢，
   // 查詢結果在五次排版內無法穩定，編譯時會出現 did not converge 警告。
   // target queries outlined headings only: the bibliography group headings are made
   // inside context, and querying them too keeps the query from stabilizing within
   // five layout passes, which ends in a "did not converge" warning.
-  outline(indent: auto, depth: 3, target: heading.where(outlined: true))
+  outline(title: [目次], indent: auto, depth: 3, target: heading.where(outlined: true))
 
   pagebreak()
 
