@@ -1,39 +1,74 @@
 # flamegold
 
-適用於 [Typst](https://typst.app/) 的繁體中文學術論文模板，版面仿《臺大法學論叢》（NTU Law Journal）：中英封面、摘要、目錄、腳註式 CSL 引註，以及依語言與類型分組的參考文獻。
+> **非官方**：本模板為個人製作，與所模仿的任何大學、法學院或期刊均無關，亦未經其認可。投稿前請以各期刊最新公布的撰稿格式為準。
 
-字體、行內樣式、註腳與標題編號沿用 [typst-basic-zh](https://github.com/zhenhuang-tw/typst-basic-zh) 的 `common.typ`，以 Git 子模組（submodule）引入，因此與筆記模板外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，目前固定於 fork 的 `ntu-adapted` 分支，其中修正了腳註編號、引用頁範圍、姓名變數與 `shorttitle`。
+適用於 [Typst](https://typst.app/) 的繁體中文法學論文模板，版面仿臺灣頂尖大學法學院的期刊：中英封面、摘要、目錄、腳註式 CSL 引註，以及依語言與類型分組的參考文獻。以 `preset` 參數選擇要模仿的期刊，目前支援《臺大法學論叢》（`"ntulj"`）與《臺北大學法學論叢》（`"ntpu"`）；不指定時為泛用格式。
+
+排版規則、行內樣式、註腳與標題編號沿用 [yuhina](https://github.com/zhenhuang-tw/yuhina) 套件，因此與筆記套件 [bluemagpie](https://github.com/zhenhuang-tw/bluemagpie) 外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，以 Git 子模組（submodule）固定於 fork 的 `ntu-adapted` 分支，其中修正了腳註編號、引用頁範圍、姓名變數與 `shorttitle`。
+
+本套件的名稱 `flamegold` 得名於臺灣特有種臺灣欒樹（flamegold rain tree）。
 
 ## 環境需求
 
 1. [Typst](https://github.com/typst/typst#installation) 0.15 以上（`bib` 參數使用 0.15 新增的 `path` 型別）。
-2. 字型同 typst-basic-zh，見其 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#環境需求)；但台灣圓體與朱雀仿宋僅供筆記專用的 `#hypo`、`#thought` 使用，本模板不需要。
+2. 建議安裝下列字型：Times New Roman、Arial、新細明體（`PMingLiU`）、標楷體（`DFKai-SB`）、微軟正黑體（`Microsoft JhengHei UI`）。Windows 皆已內建。
+
+新細明體、標楷體與微軟正黑體是 Windows 隨附的商用字型，macOS、Linux 通常沒有。缺少時，本模板依序改用下列字型，它們都可免費取得：
+
+| 用途         | 首選字型   | 替補字型（依序）                         |
+| ------------ | ---------- | ---------------------------------------- |
+| 內文（明體） | 新細明體   | `Noto Serif TC`、`Noto Serif CJK TC`     |
+| 黑體         | 微軟正黑體 | `Noto Sans TC`、`Noto Sans CJK TC`       |
+| 楷體         | 標楷體     | 教育部標準楷書（`TW-MOE-Std-Kai`）       |
+
+`Noto Serif TC`、`Noto Sans TC` 是 Google Fonts 發行的版本；名稱帶 `CJK` 者為同一字型的 Pan-CJK 版本，Typst web app 預裝的是後者與教育部標準楷書。
+
+使用替補字型時，Typst 仍會對找不到的首選字型顯示 `unknown font family` 警告，不影響輸出。
 
 首次編譯時，Typst 會自動下載 `@preview/cuti` 與 `@preview/citegeist`。
 
+> Typst web app 無法使用本機套件（`@local`），因此在 yuhina 與本套件上架 Typst Universe 前，請以本機的 Typst 編譯。
+
 ## 安裝
 
-在您的論文專案根目錄執行：
+本套件與 yuhina 都尚未上架 Typst Universe，須安裝為本機套件（local package）。Typst 會在 `%APPDATA%\typst\packages\local\<名稱>\<版本>` 尋找本機套件。clone 本 repo 後執行 `install.ps1`，會為本套件與 yuhina 各建立一個指向 clone 的目錄連結（junction）；之後 clone 內容變動，不必重新複製。建立 junction 不需要系統管理員權限。
 
 ```powershell
-git submodule add https://github.com/zhenhuang-tw/flamegold.git flamegold
-git submodule update --init --recursive
+git clone --recurse-submodules https://github.com/zhenhuang-tw/flamegold.git
+cd flamegold
+powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-本模板自己也有兩個 submodule（`typst-basic-zh`、`citrus`），所以一定要加 `--recursive`；少了它，`flamegold/typst-basic-zh/` 與 `flamegold/citrus/` 會是空資料夾，編譯時出現找不到 `common.typ` 或 `lib.typ` 的錯誤。
+腳本的行為：
 
-在其他電腦 clone 論文專案時，同樣請用：
+- 若 `citrus` 子模組尚未取出（clone 時少了 `--recurse-submodules`），先執行 `git submodule update --init` 取出。
+- 在本 repo 旁邊的 `..\yuhina` 尋找 yuhina 的 clone；找不到就 clone 到那裡（需要 git）。已依 bluemagpie 的說明安裝過 yuhina 者，會沿用同一個 clone。
+- 從各自的 `typst.toml` 讀取套件名稱與版本來決定資料夾，不會對不上。
+- 可重複執行：已正確連結的會略過；該路徑上已有真實資料夾時會中止，不會刪除；已有指向別處的 junction 時，加上 `-Force` 才會替換（只移除 junction，不動它所指向的資料夾）。
+- `-YuhinaPath` 指定 yuhina clone 的位置，`-PackageRoot` 指定本機套件目錄。
+
+`-ExecutionPolicy Bypass` 只對這一次執行有效。Windows 用戶端預設的執行原則不允許執行 `.ps1`；若你已調整過，可直接執行 `.\install.ps1`。使用 PowerShell 7 時，將 `powershell` 換成 `pwsh`。
+
+安裝後，文件即可 `#import "@local/flamegold:0.1.0": *`。未安裝時，編譯會出現 `package not found (searched for @local/flamegold:0.1.0)`；少了 yuhina 則是 `@local/yuhina:0.1.0`。
+
+### 更新
+
+在兩個 clone 內各執行 `git pull`；本 repo 另需更新 `citrus` 子模組，以取得新版所固定的 commit：
 
 ```powershell
-git clone --recurse-submodules <論文專案網址>
+git pull
+git submodule update --init
 ```
+
+junction 指向 clone 本身，所有文件下次編譯就會用到新版。若 `typst.toml` 的 `version` 提高（例如 0.2.0），再執行一次 `install.ps1` 即會建立新版本的 junction，並把文件中的 `@local/flamegold:0.1.0` 改為新版本。
 
 ## 快速開始
 
 ```typ
-#import "flamegold/lib.typ": *
+#import "@local/flamegold:0.1.0": *
 
 #show: paper.with(
+  preset: "ntulj",                  // 選填：模仿的期刊；不填為泛用格式
   bib: path("ref.bib"),             // 或 path("references.json")
   csl: read("law-journals-citation-guide.csl"),
   title: "誠實信用原則與衡平法之性質及功能",
@@ -43,7 +78,6 @@ git clone --recurse-submodules <論文專案網址>
   title-en: "The nature and function of the principle of good faith and equity",
   abstract-en: [This article examines ...],
   keywords-en: "Principle of good faith, Equity",
-  even-header: "臺大法學論叢",       // 選填：雙數頁頁首
 )
 
 = 緒論
@@ -57,13 +91,37 @@ git clone --recurse-submodules <論文專案網址>
 typst compile paper.typ
 ```
 
-`bib` 請用 `path()` 包住書目檔的路徑。`path()` 在你的文件中解析路徑，所以相對路徑以你的文件所在資料夾為準，例如 `path("refs/ref.bib")`；若直接傳字串，路徑會改以模板所在資料夾為準而找不到檔案，因此模板只接受 `path`。
+`bib` 請用 `path()` 包住書目檔的路徑。`path()` 在你的文件中解析路徑，所以相對路徑以你的文件所在資料夾為準，例如 `path("refs/ref.bib")`；若直接傳字串，路徑會改以套件所在資料夾為準而找不到檔案，因此模板只接受 `path`。
 
 書目格式由 `bib-format` 指定，可為 `"csl-json"`、`"biblatex"`（含 BibTeX）或 `"hayagriva"`。預設 `auto` 依檔案內容判斷：以 `[` 或 `{` 開頭者為 CSL-JSON，含 `@類型{` 條目者為 BibLaTeX，都不是時會要求你指定；副檔名不影響判斷。檔案開頭的 UTF-8 BOM 會自動去除。
 
 Typst 內建的 Hayagriva YAML 格式目前**不支援**：本模板以 citrus 處理引註，而 citrus 只能解析 BibLaTeX 與 CSL-JSON。指定 `"hayagriva"` 時會報錯。
 
 `csl` 則必須由你的文件自己 `read()` 後傳入內容。
+
+## 預設格式（preset）
+
+國科會《法學期刊引註格式凡例》是 TSSCI 一級法學期刊共通的引註格式，各刊差異不大，交由你傳入的 CSL 處理；`preset` 只處理版面。
+
+| `preset`        | 期刊               | 雙數頁頁首         |
+| --------------- | ------------------ | ------------------ |
+| `none`（預設）  | 泛用格式           | 只有頁碼           |
+| `"ntulj"`       | 《臺大法學論叢》   | 頁碼　臺大法學論叢 |
+| `"ntpu"`        | 《臺北大學法學論叢》 | 頁碼　臺北大學法學論叢 |
+
+preset 只提供預設值。參數表中預設為 `auto` 的參數（`even-header`、`bib-order`），明確傳入時一律優先，例如 `preset: "ntulj", even-header: "臺大法學論叢第 54 卷第 1 期"`，或 `even-header: none` 只輸出頁碼。
+
+各 preset 的差異：
+
+| 項目             | 泛用格式                                   | `"ntulj"`                            | `"ntpu"`                                          |
+| ---------------- | ------------------------------------------ | ------------------------------------ | ------------------------------------------------- |
+| 中文摘要標題     | 「摘要」置中，字型同其他標題               | 「<摘要>」楷體 13pt 置中             | 同泛用格式（因此為楷體 18pt）                     |
+| 中文關鍵字       | 「關鍵字：」黑體粗體，關鍵字為內文字型；首行縮排 2 字 | 全行楷體、「關鍵字：」加粗；凸排 | 同泛用格式                                        |
+| 標題             | 黑體粗體；「壹、」16.8pt、「一、」14.4pt，其餘 12pt | 同泛用格式                           | 楷體不加粗；「壹、」18pt、「一、」14pt，其餘 12pt |
+| 註腳             | 明體，Typst 預設註腳字級                   | 同泛用格式                           | 明體 9pt，行高 12pt                               |
+| 參考文獻順序     | 外文在前、中文在後                         | 同泛用格式                           | 中文、日文在前，其他外文在後                      |
+
+各 preset 的摘要標題都不列入目錄。`"ntpu"` 依該刊〈投稿論文參考格式〉；其中的「級」即 Word 的點（pt）。「行高 12pt」模仿 Word 的「最小行高 12pt」：一般行的基線距離固定為 12pt，含有較高行內內容的行才會撐開。
 
 ## 參數說明
 
@@ -74,14 +132,16 @@ Typst 內建的 Hayagriva YAML 格式目前**不支援**：本模板以 citrus �
 | `bib`                            | path               | —       | **必填**。`path("ref.bib")`；依內容判斷為 CSL-JSON 或 BibTeX。                 |
 | `bib-format`                     | `auto`／字串       | `auto`  | `"csl-json"`、`"biblatex"` 或 `"hayagriva"`（目前不支援）；`auto` 依內容判斷。 |
 | `csl`                            | 字串               | —       | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。                    |
+| `preset`                         | `none`／字串       | `none`  | 模仿的期刊：`"ntulj"`、`"ntpu"`；`none` 為泛用格式。見〈預設格式〉。           |
 | `title`                          | 字串               | `""`    | 中文主標題。                                                                   |
 | `title-thanks`、`subtitle`       | 內容／`none`       | `none`  | 標題的註解（以腳註呈現）、副標題。                                             |
 | `title-en`                       | 字串／`none`       | `none`  | 英文標題。不填則不產生英文封面頁。                                             |
 | `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none`  | 英文標題註解、英文副標題。                                                     |
-| `authors`                        | 字串／字典／陣列   | `()`    | 中文作者，寫法同 typst-basic-zh。                                              |
+| `authors`                        | 字串／字典／陣列   | `()`    | 中文作者，寫法見下。                                                           |
 | `authors-en`                     | 字串／字典／陣列   | `()`    | 英文作者。不填則沿用 `authors`。                                               |
-| `even-header`                    | 字串／內容／`none` | `none`  | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。                 |
+| `even-header`                    | `auto`／字串／內容／`none` | `auto`  | 雙數頁頁首於頁碼後輸出的字串。`auto` 取 preset 的期刊名稱；`none` 只輸出頁碼。 |
 | `list-cases`                     | 布林值             | `false` | 是否將裁判列入參考文獻。                                                       |
+| `bib-order`                      | `auto`／陣列       | `auto`  | 參考文獻分組的順序，見〈引註與參考文獻〉。`auto` 取 preset 的順序。            |
 | `abstract-zh`、`abstract-en`     | 內容               | `[]`    | 中、英文摘要。留空則不輸出。                                                   |
 | `keywords-zh`、`keywords-en`     | 字串／`none`       | `none`  | 中、英文關鍵字。                                                               |
 
@@ -109,7 +169,7 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 #ncite(prefix: "可參照", "bibKey", "5", suffix: "之不同語境。")
 ```
 
-文末參考文獻依語言與類型分組，外文文獻在前、中文文獻在後。沒有文獻的分組不輸出；全文沒有任何引用時，整個參考文獻章節都不輸出：
+文末參考文獻依語言與類型分組。泛用格式與 `ntulj` 為外文文獻在前、中文文獻在後；`ntpu` 為中文、日文文獻在前，其他外文在後。順序也可以用 `bib-order` 自行指定。沒有文獻的分組不輸出；全文沒有任何引用時，整個參考文獻章節都不輸出。泛用格式的分組如下：
 
 ```
 參考文獻
@@ -127,6 +187,8 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 ```
 
 上例為所有分組都有文獻時的樣子；實際編號依有輸出的分組遞補。
+
+`bib-order` 為下列代碼組成的陣列，依序輸出；未列出的分組不輸出：`"en"`（英文）、`"ja"`（日文）、`"de"`（德文）、`"fr"`（法文）、`"other"`（其他外文）、`"zh"`（中文）。例如 `ntpu` 的順序為 `("zh", "ja", "en", "de", "fr", "other")`。
 
 裁判原則上不列入參考文獻：CSL-JSON 中 `type` 為 `legal_case`，或 BibTeX 中標示 `mark = {LEGAL_CASE}` 的文獻，只出現在註腳。若要列入，請傳入 `list-cases: true`，裁判會依語言列入各分組，中文裁判列於「其他」。
 
@@ -183,58 +245,85 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 
 ## 行內樣式與編號
 
-入口檔 `lib.typ` 只匯出主函式 `paper`、引註函式 `ncite`、`ncitef`、字型名稱 `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong`，以及 `keyword`（重點強調）與 `inquote`（行內引用）兩個行內樣式函式；其餘名稱屬內部實作，日後可能變動。行內樣式函式的用法見 typst-basic-zh 的 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#行內樣式函式)。筆記專用的 `very-keyword`、`hypo`、`thought`、`rightNote` 不提供；從舊版遷移的論文若用到它們，請改寫或自行定義。
+`lib.typ` 只匯出下列名稱，其餘屬內部實作，日後可能變動：
 
-標題與編號清單的編號規則同樣來自 typst-basic-zh。標題編號與 `basic-note.typ` 相同：`=` 為「壹、」，`==` 為「一、」，`===` 為「(一)」。
+| 名稱                                                           | 用途                                           |
+| -------------------------------------------------------------- | ---------------------------------------------- |
+| `paper`                                                        | 主函式                                         |
+| `ncite`、`ncitef`                                              | 腳註內引用、單一引用的腳註                     |
+| `keyword`                                                      | 重點強調（原字體加粗）                         |
+| `inquote`                                                      | 行內引用（楷體）                               |
+| `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong` | 字型組合，已含〈環境需求〉所列的替補字型       |
 
-交互參照也與 `basic-note.typ` 相同：在標題後加上標籤，內文以 `@標籤` 參照，會輸出完整層級路徑，例如 `見@issue` 輸出「見貳、一、(三)」；`@issue[本文]` 輸出「本文貳、一、(三)」。詳見 typst-basic-zh 的 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#交互參照)。
+`keyword`、`inquote` 的用法見 yuhina 的 [README](https://github.com/zhenhuang-tw/yuhina/blob/main/README-zh.md)。筆記專用的 `very-keyword`、`hypo`、`thought`、`right-note` 由 bluemagpie 提供，本模板不匯出。
+
+標題編號沿用 yuhina，並多一層「①」：
+
+| 寫法          | 編號      |
+| ------------- | --------- |
+| `= 標題`      | 壹、標題（置中） |
+| `== 標題`     | 一、標題  |
+| `=== 標題`    | (一) 標題 |
+| `==== 標題`   | 1.標題    |
+| `===== 標題`  | (1) 標題  |
+| `====== 標題` | ①標題     |
+
+目錄只收錄到「(一)」層。
+
+交互參照：在標題後加上標籤，內文以 `@標籤` 參照，會輸出完整層級路徑，例如 `見@issue` 輸出「見貳、一、(三)」；`@issue[本文]` 輸出「本文貳、一、(三)」。頁碼參照請寫 `#ref(<issue>, form: "page")`。
+
+編號清單依層級為 `1. → (1) → A. → (A) → a. → (a)`。
 
 ## 版面
 
-與 typst-basic-zh 的筆記模板相比：
+與 bluemagpie 的筆記相比：
 
-| 項目     | 筆記（typst-basic-zh） | 論文（本模板）                                                            |
+| 項目     | 筆記（bluemagpie）     | 論文（本模板）                                                            |
 | -------- | ---------------------- | ------------------------------------------------------------------------- |
 | 段落     | 不縮排，行距 1.1em     | 首行縮排 2 字，行距 1.2em                                                 |
-| 首頁     | 標題、作者，其下接目錄 | 中文標題、作者、「<摘要>」、關鍵字                                        |
+| 首頁     | 標題、作者，其下接目錄 | 中文標題、作者、摘要、關鍵字                                              |
 | 其他前頁 | 無                     | 英文封面與 Abstract（填 `title-en` 時）、獨立目錄頁                       |
 | 文末     | 不輸出參考文獻清單     | 分組參考文獻                                                              |
 | 頁首     | 無                     | 第一頁不輸出；雙數頁靠左「頁碼　`even-header`」，單數頁靠右「標題　頁碼」 |
 
-頁首使用黑體、不加粗，10pt；英數字為 Arial（無襯線體）。單數頁只輸出主標題 `title`，不含副標題與標題註解；標題若有換行（`\` 或字串中的 `\n`），頁首只取換行前的第一行。頁尾置中頁碼與筆記模板相同，仍然保留。
+頁首使用黑體、不加粗，10pt；英數字為 Arial（無襯線體）。單數頁只輸出主標題 `title`，不含副標題與標題註解；標題若有換行（`\` 或字串中的 `\n`），頁首只取換行前的第一行。頁尾置中頁碼與筆記相同，仍然保留。
 
-## 從 typst-basic-zh 遷移
+## 從舊版遷移
+
+### 原本以 submodule 使用 typst-ntulj
+
+本套件舊名 typst-ntulj，原以 Git submodule 加入論文專案。請依序處理：
+
+1. 依〈安裝〉安裝本套件與 yuhina。
+2. 在論文專案根目錄移除 submodule。最後一行是清理，可省略：
+
+   ```powershell
+   git submodule deinit -f typst-ntulj
+   git rm -f typst-ntulj
+   git commit -m "chore(tpl): replace typst-ntulj submodule with flamegold local package"
+   Remove-Item -Recurse -Force .git\modules\typst-ntulj
+   ```
+
+3. 修改文件：
+
+   | 原本                                  | 改為                                                   |
+   | ------------------------------------- | ------------------------------------------------------ |
+   | `#import "typst-ntulj/lib.typ": *`    | `#import "@local/flamegold:0.1.0": *`                  |
+   | `#show: paper.with(…)`                | `#show: paper.with(preset: "ntulj", …)`，以維持原本的版面 |
+   | `even-header: "臺大法學論叢"`         | 使用 `preset: "ntulj"` 時可刪除                        |
+
+其他差異：交互參照 `@標籤` 改為輸出「壹、一」等層級路徑（舊版輸出 Typst 預設格式）；摘要與 Abstract 不再列入目錄；第六層標題編號為「①」。
 
 ### 原本匯入 `typst-basic-zh/academic-paper.typ`
 
-1. 依「安裝」一節加入本 submodule。
-2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "flamegold/lib.typ": *`。主函式由 `project` 改名為 `paper`；`ncite`、`ncitef` 的參數不變。
-3. 若該專案只用來寫論文，可以移除原本的 `typst-basic-zh` submodule：
-
-```powershell
-git rm typst-basic-zh
-git commit -m "chore(tpl): replace typst-basic-zh with flamegold"
-```
+1. 依〈安裝〉安裝本套件與 yuhina。
+2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "@local/flamegold:0.1.0": *`。主函式由 `project` 改名為 `paper`，並加上 `preset: "ntulj"`；`ncite`、`ncitef` 的參數不變。
+3. 若該專案只用來寫論文，可以移除原本的 `typst-basic-zh` submodule（步驟同上）。
 
 ### 原本使用獨立的 `template_basicPaper.typ`
 
-1. 匯入路徑改為 `flamegold/lib.typ`。
-2. 將 `project.with(...)` 改為 `paper.with(...)`，並加上 `bib: path("ref.bib")`（或 `path("references.json")`）與 `csl: read("你的樣式.csl")`。
+1. 匯入路徑改為 `@local/flamegold:0.1.0`。
+2. 將 `project.with(...)` 改為 `paper.with(...)`，並加上 `bib: path("ref.bib")`（或 `path("references.json")`）、`csl: read("你的樣式.csl")` 與 `preset: "ntulj"`。
 3. 原專案資料夾中的 `template_basicPaper.typ` 可以刪除。
 
 差異：巢狀編號清單的第二層由 `1.` 改為 `(1)`；參考文獻不再重複列出英文文獻、分組編號從「一、」起算、空分組不輸出。
-
-## 更新 submodule
-
-在你的論文專案根目錄執行：
-
-```powershell
-git submodule update --remote --merge flamegold
-git -C flamegold submodule update --init --recursive
-git add flamegold
-git commit -m "chore(tpl): update flamegold submodule"
-```
-
-第二行不可省略：`--remote` 只會把 `flamegold` 本身移到最新版，不會讓其內的 `typst-basic-zh`、`citrus` 跟著切到新版所指定的 commit。第二行以 `-C flamegold` 在模板資料夾內執行；若改在論文專案根目錄執行 `git submodule update`，且尚未 `git add flamegold`，Git 會把 `flamegold` 退回論文專案原本記錄的舊 commit。
-
-本模板所用的 typst-basic-zh 版本由本 repo 固定。typst-basic-zh 更新後，若要讓論文跟進，應先在本 repo 更新 `typst-basic-zh` submodule 並提交，論文專案再依上述步驟更新 `flamegold`；不要在論文專案裡直接進入 `flamegold/typst-basic-zh/` 切換版本。
