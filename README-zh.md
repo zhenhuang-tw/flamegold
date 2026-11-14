@@ -31,7 +31,7 @@ git clone --recurse-submodules <論文專案網址>
 ## 快速開始
 
 ```typ
-#import "typst-ntulj/ntulj.typ": *
+#import "typst-ntulj/lib.typ": *
 
 #show: paper.with(
   bib: path("ref.bib"),             // 或 path("references.json")
@@ -137,7 +137,7 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 
 ## 行內樣式與編號
 
-本模板只匯出 `keyword`（重點強調）與 `inquote`（行內引用）兩個行內樣式函式，用法見 typst-basic-zh 的 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#行內樣式函式)。筆記專用的 `very-keyword`、`hypo`、`thought`、`rightNote` 不提供；從舊版遷移的論文若用到它們，請改寫或自行定義。
+入口檔 `lib.typ` 只匯出主函式 `paper`、引註函式 `ncite`、`ncitef`、字型名稱 `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong`，以及 `keyword`（重點強調）與 `inquote`（行內引用）兩個行內樣式函式；其餘名稱屬內部實作，日後可能變動。行內樣式函式的用法見 typst-basic-zh 的 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#行內樣式函式)。筆記專用的 `very-keyword`、`hypo`、`thought`、`rightNote` 不提供；從舊版遷移的論文若用到它們，請改寫或自行定義。
 
 標題與編號清單的編號規則同樣來自 typst-basic-zh。標題編號與 `basic-note.typ` 相同：`=` 為「壹、」，`==` 為「一、」，`===` 為「(一)」。
 
@@ -162,7 +162,7 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 ### 原本匯入 `typst-basic-zh/academic-paper.typ`
 
 1. 依「安裝」一節加入本 submodule。
-2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "typst-ntulj/ntulj.typ": *`。主函式由 `project` 改名為 `paper`；`ncite`、`ncitef` 的參數不變。
+2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "typst-ntulj/lib.typ": *`。主函式由 `project` 改名為 `paper`；`ncite`、`ncitef` 的參數不變。
 3. 若該專案只用來寫論文，可以移除原本的 `typst-basic-zh` submodule：
 
 ```powershell
@@ -172,7 +172,7 @@ git commit -m "chore(tpl): replace typst-basic-zh with typst-ntulj"
 
 ### 原本使用獨立的 `template_basicPaper.typ`
 
-1. 匯入路徑改為 `typst-ntulj/ntulj.typ`。
+1. 匯入路徑改為 `typst-ntulj/lib.typ`。
 2. 將 `project.with(...)` 改為 `paper.with(...)`，並加上 `bib: path("ref.bib")`（或 `path("references.json")`）與 `csl: read("你的樣式.csl")`。
 3. 原專案資料夾中的 `template_basicPaper.typ` 可以刪除。
 

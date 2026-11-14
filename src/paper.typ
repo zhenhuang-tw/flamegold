@@ -1,20 +1,22 @@
-// ntulj.typ
-// 學術論文入口檔（仿《臺大法學論叢》）：中英封面、摘要、目錄、note 式 CSL 引註、分類參考文獻。
-// Entry point for academic papers, modeled on the National Taiwan University Law Journal:
+// src/paper.typ
+// 學術論文模板的實作（仿《臺大法學論叢》）：中英封面、摘要、目錄、note 式 CSL 引註、分類參考文獻。
+// 公開介面由 lib.typ 決定；文件請匯入 lib.typ，不要直接匯入本檔。
+// Implementation of the paper template, modeled on the National Taiwan University Law Journal:
 // bilingual cover, abstracts, outline, note-style CSL citations, and a categorized bibliography.
+// lib.typ decides the public interface; documents should import lib.typ, not this file.
 //
 // 字體、行內樣式、註腳與標題編號沿用 typst-basic-zh 的 common.typ（submodule）。
 // Fonts, inline styles, footnotes and heading numbering come from common.typ in the
 // typst-basic-zh submodule.
 
-#import "typst-basic-zh/common.typ": *
+#import "../typst-basic-zh/common.typ": *
 // path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
 #assert(
   sys.version >= version(0, 15, 0),
   message: "ntulj: 需要 Typst 0.15 以上 / requires Typst 0.15 or later",
 )
 
-#import "citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
+#import "../citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
 
 // ============================================================
 // § 腳註內引用指令（非遞迴版）
