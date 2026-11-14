@@ -1,8 +1,10 @@
 // src/paper.typ
-// 學術論文模板的實作（仿《臺大法學論叢》）：中英封面、摘要、目錄、note 式 CSL 引註、分類參考文獻。
+// 學術論文模板的實作（仿臺灣法學期刊，版面由 preset.typ 選擇）：中英封面、摘要、目錄、
+// note 式 CSL 引註、分類參考文獻。
 // 公開介面由 lib.typ 決定；文件請匯入 lib.typ，不要直接匯入本檔。
-// Implementation of the paper template, modeled on the National Taiwan University Law Journal:
-// bilingual cover, abstracts, outline, note-style CSL citations, and a categorized bibliography.
+// Implementation of the paper template, modeled on Taiwanese law journals with
+// the layout picked from preset.typ: bilingual cover, abstracts, outline,
+// note-style CSL citations, and a categorized bibliography.
 // lib.typ decides the public interface; documents should import lib.typ, not this file.
 //
 // 排版規則、註腳與標題編號沿用 yuhina 套件（@local/yuhina），字型則改用 fonts.typ
@@ -16,6 +18,7 @@
 )
 #import "fonts.typ": font-hei, font-kai, font-song
 #import "heading.typ": heading-numbering, ref-style
+#import "preset.typ": resolve-preset
 // path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
 #assert(
   sys.version >= version(0, 15, 0),
@@ -167,6 +170,15 @@
   bib-format: auto,
   csl: none,
 
+  // ── 預設格式 / Preset ──
+  // 要模仿的期刊版面，以縮寫指定："ntulj"（臺大法學論叢）、"ntpu"（臺北大學法學論叢）；
+  // none 為泛用格式。preset 只提供預設值：下列預設為 auto 的參數，明確傳入時一律優先。
+  // The journal layout to follow, by its short id: "ntulj" (National Taiwan
+  // University Law Journal) or "ntpu" (Taipei University Law Review); none is the
+  // generic layout. A preset only supplies defaults: parameters below that
+  // default to auto always win when passed.
+  preset: none,
+
   // ── 中文標題區 / Chinese title ──
   title: "",
   title-thanks: none,
@@ -183,14 +195,23 @@
 
   // ── 頁首 / Running head ──
   // 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱 "臺大法學論叢"；none 則只輸出頁碼。
-  // Text after the page number in even-page headers, e.g. the journal name; none prints the page number only.
-  even-header: none,
+  // auto 取 preset 的值：期刊 preset 為期刊名稱，泛用格式為 none。
+  // Text after the page number in even-page headers, e.g. the journal name; none
+  // prints the page number only. auto takes the preset's value: the journal name
+  // for a journal preset, none for the generic layout.
+  even-header: auto,
 
   // ── 參考文獻 / Bibliography ──
   // 裁判原則上不列入參考文獻；設為 true 時，依語言列入各分組（中文裁判列於「其他」）。
   // Cases are left out of the bibliography by default; when true, they are listed
   // in their language group (Chinese cases under 其他).
   list-cases: false,
+  // 參考文獻分組的順序，為 "en"、"ja"、"de"、"fr"、"other"（其他外文）、"zh" 組成的陣列；
+  // 未列出的分組不輸出。auto 取 preset 的值。
+  // Order of the bibliography groups, an array of "en", "ja", "de", "fr",
+  // "other" (any other language) and "zh"; groups left out are not printed.
+  // auto takes the preset's value.
+  bib-order: auto,
 
   // ── 摘要與關鍵字 / Abstracts and keywords ──
   abstract-zh: [],
@@ -205,6 +226,16 @@
     message: "flamegold: bib 請以 path() 傳入，例如 bib: path(\"ref.bib\") / pass bib as a path, e.g. bib: path(\"ref.bib\")",
   )
   assert(csl != none, message: "flamegold: 請傳入 csl: read(\"style.csl\") / pass csl: read(\"style.csl\")")
+
+  // preset 只提供預設值；明確傳入的參數優先 / A preset only supplies defaults; explicit parameters win
+  let layout = resolve-preset(preset)
+  let even-header = if even-header == auto { layout.even-header } else { even-header }
+  let bib-order = if bib-order == auto { layout.bib-order } else { bib-order }
+  let bib-groups = ("en", "ja", "de", "fr", "other", "zh")
+  assert(
+    type(bib-order) == array and bib-order.all(g => g in bib-groups),
+    message: "flamegold: bib-order 須為 \"en\"、\"ja\"、\"de\"、\"fr\"、\"other\"、\"zh\" 組成的陣列 / bib-order must be an array of \"en\", \"ja\", \"de\", \"fr\", \"other\" and \"zh\"",
+  )
 
   // 去除開頭的 UTF-8 BOM：Windows 上部分工具（如 Windows PowerShell 5.1 的
   // Out-File -Encoding utf8）會寫入 BOM，citrus 解析 JSON 時會因此失敗。
@@ -289,11 +320,15 @@
     par(text(size: 0pt, "")) // 不可見的假段落 / Invisible dummy paragraph
   }
 
-  // 仿《臺大法學論叢》：中文摘要標題顯示為楷體置中的「<摘要>」
-  // Following National Taiwan University Law Journal: the Chinese abstract heading shows "<摘要>" in Kai, centered
-  show heading.where(numbering: none, body: [摘要]): _ => align(
+  // 中文摘要標題置中，字型與粗細同其他標題；preset 有 abstract-title 時改輸出該內容，
+  // 例如臺大的楷體「<摘要>」。只輸出標題文字而非整個標題區塊，以免其後第一段失去首行縮排。
+  // The Chinese abstract heading is centered, in the font and weight of the other
+  // headings; a preset's abstract-title replaces it, e.g. "<摘要>" in Kai for
+  // ntulj. Only the heading text is printed, not the heading block, so that the
+  // first paragraph after it keeps its first-line indent.
+  show heading.where(numbering: none, body: [摘要]): it => align(
     center,
-    text(font: font-kai, size: 13pt, weight: "regular", "<摘要>"),
+    if layout.abstract-title == none { it.body } else { layout.abstract-title },
   )
 
   let authors-arr = normalize-authors(authors)
@@ -309,7 +344,10 @@
     abstract-zh
     if keywords-zh != none {
       v(0.5em)
-      text(font: font-kai)[#text(weight: "bold")[關鍵字：]#keywords-zh]
+      let style = layout.keywords
+      let label = text(font: style.label-font, weight: "bold")[關鍵字：]
+      let words = if style.body-font == none { keywords-zh } else { text(font: style.body-font, keywords-zh) }
+      [#label#words]
     }
   }
 
@@ -359,11 +397,11 @@
   body
 
   // ── 參考文獻 / Bibliography ──
-  // 先依語言、中文文獻再依類型分組；外文文獻在前，中文文獻在後。沒有任何文獻的
+  // 先依語言、中文文獻再依類型分組；語言的順序由 bib-order 決定。沒有任何文獻的
   // 分組不輸出標題；完全沒有引用時，整個參考文獻章節都不輸出。除非 list-cases 為 true，
   // 裁判不列入。
-  // Grouped by language, foreign-language groups first and Chinese last, and
-  // Chinese entries also by type. Groups without entries are omitted; with no
+  // Grouped by language in bib-order, and Chinese entries also by type.
+  // Groups without entries are omitted; with no
   // citations at all, the whole section is omitted. Cases are left out unless
   // list-cases is true.
   //
@@ -385,15 +423,17 @@
       ]
     }
 
-    // 外文分組及其順序；其後依序為其他外文文獻、中文文獻
-    // Foreign-language groups in output order, followed by other languages and then Chinese
-    let foreign-groups = (
-      ("en", [英文文獻]),
-      ("ja", [日文文獻]),
-      ("de", [德文文獻]),
-      ("fr", [法文文獻]),
+    // 以語言代碼分組的標題；"other" 收錄上列以外語言的文獻（例如韓文、義大利文）
+    // Group titles by language code; "other" takes entries in any other language
+    let lang-titles = (
+      en: [英文文獻],
+      ja: [日文文獻],
+      de: [德文文獻],
+      fr: [法文文獻],
+      other: [其他外文文獻],
+      zh: [中文文獻],
     )
-    let known-langs = foreign-groups.map(g => g.at(0)) + ("zh",)
+    let known-langs = lang-titles.keys().filter(k => k != "other")
     // 中文文獻的類型分組，以 BibTeX 類型比對；CSL-JSON 的 book、chapter、
     // article-journal、thesis 會由 citrus 對應為 book、incollection、article、phdthesis。
     // Type groups for Chinese entries, matched on BibTeX types; citrus maps the
@@ -412,19 +452,23 @@
     // An unnumbered level-1 heading does not step the counter; reset it so the groups below restart at 一、 and (一)
     counter(heading).update(0)
 
-    for (lang, title) in foreign-groups {
-      group(2, title, entries.filter(e => e.lang == lang))
-    }
-    // 上列以外語言的文獻（例如韓文、義大利文）/ Entries in any other language
-    group(2, [其他外文文獻], entries.filter(e => e.lang not in known-langs))
-
-    let zh-items = entries.filter(e => e.lang == "zh")
-    if zh-items.len() > 0 {
-      heading(level: 2, outlined: false)[中文文獻]
-      for (type-title, types) in zh-type-groups {
-        group(3, type-title, zh-items.filter(e => type-of(e) in types))
+    // 依 bib-order 輸出各分組；中文文獻再依類型分組
+    // Print the groups in bib-order; Chinese entries are also grouped by type
+    for lang in bib-order {
+      if lang == "zh" {
+        let zh-items = entries.filter(e => e.lang == "zh")
+        if zh-items.len() > 0 {
+          heading(level: 2, outlined: false, lang-titles.zh)
+          for (type-title, types) in zh-type-groups {
+            group(3, type-title, zh-items.filter(e => type-of(e) in types))
+          }
+          group(3, [其他], zh-items.filter(e => type-of(e) not in zh-grouped-types))
+        }
+      } else if lang == "other" {
+        group(2, lang-titles.other, entries.filter(e => e.lang not in known-langs))
+      } else {
+        group(2, lang-titles.at(lang), entries.filter(e => e.lang == lang))
       }
-      group(3, [其他], zh-items.filter(e => type-of(e) not in zh-grouped-types))
     }
   }
 }
