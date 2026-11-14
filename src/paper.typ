@@ -12,9 +12,10 @@
 
 #import "@local/yuhina:0.1.0": (
   document-style, figure-style, footnote-style, heading-style, list-style, normalize-authors, page-style,
-  par-style, plain-links, quote-style, ref-style, render-authors, text-style,
+  par-style, plain-links, quote-style, render-authors, text-style,
 )
 #import "fonts.typ": font-hei, font-kai, font-song
+#import "heading.typ": heading-numbering, ref-style
 // path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
 #assert(
   sys.version >= version(0, 15, 0),
@@ -253,6 +254,7 @@
   show: figure-style.with(font: font-kai)
   show: footnote-style.with(font: font-song, label-font: font-hei)
   show: heading-style.with(font: font-hei)
+  show: heading-numbering // 第六層「①」/ Sixth level ①
   show: ref-style
 
   // 論文段落：首行縮排、行距較寬 / Paper paragraphs: first-line indent, wider leading
