@@ -29,10 +29,13 @@
   // Headings: font, weight, and font sizes from level 1 down (levels not listed
   // keep the body size)
   heading: (font: font-hei, weight: "bold", sizes: ()),
-  // 註腳：字級與行高（相鄰基線的距離）；none 沿用 yuhina 的設定
-  // Footnotes: font size and line height (distance between baselines); none
-  // keeps yuhina's settings
-  footnote: (size: none, line-height: none),
+  // 註腳：label-font 為註腳編號（內文的上標與頁底的編號）的字型；size、line-height 為
+  // 字級與行高（相鄰基線的距離），none 沿用 yuhina 的設定
+  // Footnotes: label-font for footnote numbers (the superscripts in the text
+  // and the numbers at the bottom); size and line-height for the font size and
+  // the line height (distance between baselines), where none keeps yuhina's
+  // settings
+  footnote: (label-font: font-hei, size: none, line-height: none),
   // 參考文獻分組的順序；"other" 為其他外文 / Order of bibliography groups; "other" is any other language
   bib-order: ("en", "ja", "de", "fr", "other", "zh"),
 )
@@ -45,6 +48,7 @@
     + (
       abstract-title: text(font: font-kai, size: 13pt, weight: "regular", "<摘要>"),
       keywords: (label-font: font-kai, label-weight: "regular", body-font: font-kai),
+      footnote: (label-font: font-song, size: none, line-height: none),
     ),
   // 《臺北大學法學論叢》/ Taipei University Law Review
   // 依該刊〈投稿論文參考格式〉：標題「壹、」為標楷體 18 級、「一、」為標楷體 14 級，其餘
@@ -56,7 +60,7 @@
   ntpu: generic
     + (
       heading: (font: font-kai, weight: "regular", sizes: (18pt, 14pt)),
-      footnote: (size: 9pt, line-height: 12pt),
+      footnote: (label-font: font-song, size: 9pt, line-height: 12pt),
       bib-order: ("zh", "ja", "en", "de", "fr", "other"),
     ),
 )

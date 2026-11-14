@@ -295,7 +295,7 @@
   show: figure-style.with(font: font-kai)
   show: footnote-style.with(
     font: font-song,
-    label-font: font-hei,
+    label-font: layout.footnote.label-font,
     size: layout.footnote.size,
     line-height: layout.footnote.line-height,
   )
