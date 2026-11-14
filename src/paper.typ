@@ -347,7 +347,17 @@
       let style = layout.keywords
       let label = text(font: style.label-font, weight: "bold")[關鍵字：]
       let words = if style.body-font == none { keywords-zh } else { text(font: style.body-font, keywords-zh) }
-      [#label#words]
+      if style.hanging {
+        // 凸排：首行不縮排，續行縮排「關鍵字：」的寬度，與第一個關鍵字對齊
+        // Hanging indent: no first-line indent, and wrapped lines indented by the
+        // width of 關鍵字： so that they align with the first keyword
+        context {
+          set par(first-line-indent: 0em, hanging-indent: measure(label).width)
+          [#label#words]
+        }
+      } else {
+        [#label#words]
+      }
     }
   }
 

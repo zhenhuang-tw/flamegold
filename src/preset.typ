@@ -40,7 +40,7 @@
     + (
       even-header: "臺大法學論叢",
       abstract-title: text(font: font-kai, size: 13pt, weight: "regular", "<摘要>"),
-      keywords: (label-font: font-kai, body-font: font-kai, hanging: false),
+      keywords: (label-font: font-kai, body-font: font-kai, hanging: true),
     ),
 )
 
