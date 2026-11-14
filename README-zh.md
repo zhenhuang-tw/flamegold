@@ -6,7 +6,7 @@
 
 ## 環境需求
 
-1. [Typst](https://github.com/typst/typst#installation) 0.14 以上（citrus 0.2.1 要求 0.14）。
+1. [Typst](https://github.com/typst/typst#installation) 0.15 以上（`bib` 參數使用 0.15 新增的 `path` 型別）。
 2. 字型同 typst-basic-zh，見其 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#環境需求)；但台灣圓體與朱雀仿宋僅供筆記專用的 `#hypo`、`#thought` 使用，本模板不需要。
 
 首次編譯時，Typst 會自動下載 `@preview/cuti` 與 `@preview/citegeist`。
@@ -34,7 +34,7 @@ git clone --recurse-submodules <論文專案網址>
 #import "typst-ntulj/ntulj.typ": *
 
 #show: project.with(
-  bib: "/ref.bib",                  // 或 "/references.json"
+  bib: path("ref.bib"),             // 或 path("references.json")
   csl: read("law-journals-citation-guide.csl"),
   title: "誠實信用原則與衡平法之性質及功能",
   authors: (name: "何孝元", thanks: "臺灣省立中興大學法律學系系主任。"),
@@ -57,9 +57,9 @@ git clone --recurse-submodules <論文專案網址>
 typst compile paper.typ
 ```
 
-`bib` 傳入書目檔的**路徑**，模板依副檔名決定格式：`.json` 為 CSL-JSON，其餘為 BibTeX。檔案開頭的 UTF-8 BOM 會自動去除。
+`bib` 請用 `path()` 包住書目檔的路徑。`path()` 在你的文件中解析路徑，所以相對路徑以你的文件所在資料夾為準，例如 `path("refs/ref.bib")`；若直接傳字串，路徑會改以模板所在資料夾為準而找不到檔案，因此模板只接受 `path`。
 
-路徑請以 `/` 開頭，代表專案根目錄（`typst compile` 預設為你編譯的主文件所在資料夾）。檔案由模板讀取，不以 `/` 開頭的路徑會以模板所在資料夾為準，也就是 `typst-ntulj/`，因此找不到你的檔案。
+模板依檔案內容判斷格式：以 `[` 或 `{` 開頭者為 CSL-JSON，其餘為 BibTeX，副檔名不影響判斷。檔案開頭的 UTF-8 BOM 會自動去除。
 
 `csl` 則必須由你的文件自己 `read()` 後傳入內容。
 
@@ -67,19 +67,19 @@ typst compile paper.typ
 
 主函式為 `project`，以 `#show: project.with(...)` 套用。
 
-| 參數                             | 型別               | 預設值 | 說明                                                                    |
-| -------------------------------- | ------------------ | ------ | ----------------------------------------------------------------------- |
-| `bib`                            | 字串               | —      | **必填**。書目檔路徑，以 `/` 開頭；`.json` 為 CSL-JSON，其餘為 BibTeX。 |
-| `csl`                            | 字串               | —      | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。             |
-| `title`                          | 字串               | `""`   | 中文主標題。                                                            |
-| `title-thanks`、`subtitle`       | 內容／`none`       | `none` | 標題的註解（以腳註呈現）、副標題。                                      |
-| `title-en`                       | 字串／`none`       | `none` | 英文標題。不填則不產生英文封面頁。                                      |
-| `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none` | 英文標題註解、英文副標題。                                              |
-| `authors`                        | 字串／字典／陣列   | `()`   | 中文作者，寫法同 typst-basic-zh。                                       |
-| `authors-en`                     | 字串／字典／陣列   | `()`   | 英文作者。不填則沿用 `authors`。                                        |
-| `even-header`                    | 字串／內容／`none` | `none` | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。          |
-| `abstract-zh`、`abstract-en`     | 內容               | `[]`   | 中、英文摘要。留空則不輸出。                                            |
-| `keywords-zh`、`keywords-en`     | 字串／`none`       | `none` | 中、英文關鍵字。                                                        |
+| 參數                             | 型別               | 預設值 | 說明                                                           |
+| -------------------------------- | ------------------ | ------ | -------------------------------------------------------------- |
+| `bib`                            | path               | —      | **必填**。`path("ref.bib")`；依內容判斷為 CSL-JSON 或 BibTeX。 |
+| `csl`                            | 字串               | —      | **必填**。`read("xxx.csl")` 讀出的 CSL 內容，應為 note 式。    |
+| `title`                          | 字串               | `""`   | 中文主標題。                                                   |
+| `title-thanks`、`subtitle`       | 內容／`none`       | `none` | 標題的註解（以腳註呈現）、副標題。                             |
+| `title-en`                       | 字串／`none`       | `none` | 英文標題。不填則不產生英文封面頁。                             |
+| `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none` | 英文標題註解、英文副標題。                                     |
+| `authors`                        | 字串／字典／陣列   | `()`   | 中文作者，寫法同 typst-basic-zh。                              |
+| `authors-en`                     | 字串／字典／陣列   | `()`   | 英文作者。不填則沿用 `authors`。                               |
+| `even-header`                    | 字串／內容／`none` | `none` | 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱。不填則只輸出頁碼。 |
+| `abstract-zh`、`abstract-en`     | 內容               | `[]`   | 中、英文摘要。留空則不輸出。                                   |
+| `keywords-zh`、`keywords-en`     | 字串／`none`       | `none` | 中、英文關鍵字。                                               |
 
 作者寫法：
 
@@ -173,14 +173,10 @@ git commit -m "chore(tpl): replace typst-basic-zh with typst-ntulj"
 ### 原本使用獨立的 `template_basicPaper.typ`
 
 1. 匯入路徑改為 `typst-ntulj/ntulj.typ`。
-2. 在 `project.with(...)` 中加上 `bib: "/ref.bib"`（或 `"/references.json"`）與 `csl: read("你的樣式.csl")`。
+2. 在 `project.with(...)` 中加上 `bib: path("ref.bib")`（或 `path("references.json")`）與 `csl: read("你的樣式.csl")`。
 3. 原專案資料夾中的 `template_basicPaper.typ` 可以刪除。
 
 差異：巢狀編號清單的第二層由 `1.` 改為 `(1)`；參考文獻不再重複列出英文文獻、分組編號從「一、」起算、空分組不輸出。
-
-### 原本以 `bib: read("ref.bib")` 傳入書目內容
-
-`bib` 已改為傳入路徑，請將 `bib: read("ref.bib")` 改為 `bib: "/ref.bib"`。
 
 ## 更新 submodule
 

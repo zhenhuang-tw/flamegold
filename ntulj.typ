@@ -8,6 +8,12 @@
 // typst-basic-zh submodule.
 
 #import "typst-basic-zh/common.typ": *
+// path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
+#assert(
+  sys.version >= version(0, 15, 0),
+  message: "ntulj: 需要 Typst 0.15 以上 / requires Typst 0.15 or later",
+)
+
 #import "citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
 
 // ============================================================
@@ -76,13 +82,13 @@
 // ============================================================
 #let project(
   // ── 引註資料（必填）/ Citation data (required) ──
-  // bib：書目檔路徑，依副檔名決定格式：.json 為 CSL-JSON，其餘為 BibTeX。
-  //   檔案由本模板讀取，請以「/」開頭表示專案根目錄，例如 bib: "/references.json"；
-  //   不以「/」開頭時，會以本模板所在目錄為準，submodule 下會找不到檔案。
-  // bib: path to the bibliography file; the extension decides the format:
-  //   .json is CSL-JSON, anything else is BibTeX. This template reads the file,
-  //   so start the path with "/" for the project root, e.g. bib: "/references.json";
-  //   otherwise it resolves against this template's directory.
+  // bib：書目檔，以 path() 傳入，例如 bib: path("ref.bib")。path() 在呼叫端的檔案中
+  //   解析路徑，因此相對路徑以你的文件為準。格式依檔案內容判斷：以「[」或「{」開頭者
+  //   為 CSL-JSON，其餘為 BibTeX。
+  // bib: the bibliography file as a path, e.g. bib: path("ref.bib"). path() resolves
+  //   in the caller's file, so relative paths are relative to your document. The
+  //   format is detected from the contents: CSL-JSON if it starts with "[" or "{",
+  //   BibTeX otherwise.
   // csl：由呼叫端讀檔後傳入內容，例如 csl: read("tssci-q1-law.csl")。
   // csl: file contents read by the caller, e.g. csl: read("style.csl").
   bib: none,
@@ -115,15 +121,24 @@
 
   body,
 ) = {
-  assert(bib != none, message: "ntulj: 請傳入 bib: \"/ref.bib\" / pass bib: \"/ref.bib\"")
+  assert(
+    type(bib) == path,
+    message: "ntulj: bib 請以 path() 傳入，例如 bib: path(\"ref.bib\") / pass bib as a path, e.g. bib: path(\"ref.bib\")",
+  )
   assert(csl != none, message: "ntulj: 請傳入 csl: read(\"style.csl\") / pass csl: read(\"style.csl\")")
 
-  let init = if bib.ends-with(".json") { init-csl-json } else { init-csl }
   // 去除開頭的 UTF-8 BOM：Windows 上部分工具（如 Windows PowerShell 5.1 的
   // Out-File -Encoding utf8）會寫入 BOM，citrus 解析 JSON 時會因此失敗。
   // Strip a leading UTF-8 BOM: some Windows tools write one, and citrus
   // then fails to parse the JSON.
   let data = read(bib).trim("\u{feff}", at: start)
+  // path 型別無法取得副檔名，改依內容判斷：CSL-JSON 是 JSON 陣列（少數工具輸出物件），
+  // BibTeX 則以「@」或註解開頭，不會以「[」「{」開頭。
+  // A path has no accessible extension, so detect the format from the contents:
+  // CSL-JSON is a JSON array (a few tools write an object), while BibTeX starts
+  // with "@" or a comment, never with "[" or "{".
+  let head = data.trim(at: start)
+  let init = if head.starts-with("[") or head.starts-with("{") { init-csl-json } else { init-csl }
 
   // auto-links 會把整筆註腳加上連結到參考文獻區
   // auto-links would link each whole footnote to the bibliography

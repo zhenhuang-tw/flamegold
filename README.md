@@ -8,7 +8,7 @@ The Chinese README, [README-zh.md](README-zh.md), is the full manual. This file 
 
 ## Requirements
 
-1. [Typst](https://github.com/typst/typst#installation) 0.14 or later (required by citrus 0.2.1).
+1. [Typst](https://github.com/typst/typst#installation) 0.15 or later (`bib` takes the `path` type added in 0.15).
 2. The fonts listed in the typst-basic-zh README, except TaiwanPearl and Zhuque Fangsong, which only the note-only `#hypo` and `#thought` use.
 
 Typst downloads `@preview/cuti` and `@preview/citegeist` on first compile.
