@@ -141,6 +141,8 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 
 標題與編號清單的編號規則同樣來自 typst-basic-zh。標題編號與 `basic-note.typ` 相同：`=` 為「壹、」，`==` 為「一、」，`===` 為「(一)」。
 
+交互參照也與 `basic-note.typ` 相同：在標題後加上標籤，內文以 `@標籤` 參照，會輸出完整層級路徑，例如 `見@issue` 輸出「見貳、一、(三)」；`@issue[本文]` 輸出「本文貳、一、(三)」。詳見 typst-basic-zh 的 [README](https://github.com/zhenhuang-tw/typst-basic-zh/blob/main/README-zh.md#交互參照)。
+
 ## 版面
 
 與 typst-basic-zh 的筆記模板相比：
