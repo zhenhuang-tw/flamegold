@@ -1,4 +1,4 @@
-# typst-ntulj
+# flamegold
 
 適用於 [Typst](https://typst.app/) 的繁體中文學術論文模板，版面仿《臺大法學論叢》（NTU Law Journal）：中英封面、摘要、目錄、腳註式 CSL 引註，以及依語言與類型分組的參考文獻。
 
@@ -16,11 +16,11 @@
 在您的論文專案根目錄執行：
 
 ```powershell
-git submodule add https://github.com/zhenhuang-tw/typst-ntulj.git typst-ntulj
+git submodule add https://github.com/zhenhuang-tw/flamegold.git flamegold
 git submodule update --init --recursive
 ```
 
-本模板自己也有兩個 submodule（`typst-basic-zh`、`citrus`），所以一定要加 `--recursive`；少了它，`typst-ntulj/typst-basic-zh/` 與 `typst-ntulj/citrus/` 會是空資料夾，編譯時出現找不到 `common.typ` 或 `lib.typ` 的錯誤。
+本模板自己也有兩個 submodule（`typst-basic-zh`、`citrus`），所以一定要加 `--recursive`；少了它，`flamegold/typst-basic-zh/` 與 `flamegold/citrus/` 會是空資料夾，編譯時出現找不到 `common.typ` 或 `lib.typ` 的錯誤。
 
 在其他電腦 clone 論文專案時，同樣請用：
 
@@ -31,7 +31,7 @@ git clone --recurse-submodules <論文專案網址>
 ## 快速開始
 
 ```typ
-#import "typst-ntulj/lib.typ": *
+#import "flamegold/lib.typ": *
 
 #show: paper.with(
   bib: path("ref.bib"),             // 或 path("references.json")
@@ -208,17 +208,17 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 ### 原本匯入 `typst-basic-zh/academic-paper.typ`
 
 1. 依「安裝」一節加入本 submodule。
-2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "typst-ntulj/lib.typ": *`。主函式由 `project` 改名為 `paper`；`ncite`、`ncitef` 的參數不變。
+2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "flamegold/lib.typ": *`。主函式由 `project` 改名為 `paper`；`ncite`、`ncitef` 的參數不變。
 3. 若該專案只用來寫論文，可以移除原本的 `typst-basic-zh` submodule：
 
 ```powershell
 git rm typst-basic-zh
-git commit -m "chore(tpl): replace typst-basic-zh with typst-ntulj"
+git commit -m "chore(tpl): replace typst-basic-zh with flamegold"
 ```
 
 ### 原本使用獨立的 `template_basicPaper.typ`
 
-1. 匯入路徑改為 `typst-ntulj/lib.typ`。
+1. 匯入路徑改為 `flamegold/lib.typ`。
 2. 將 `project.with(...)` 改為 `paper.with(...)`，並加上 `bib: path("ref.bib")`（或 `path("references.json")`）與 `csl: read("你的樣式.csl")`。
 3. 原專案資料夾中的 `template_basicPaper.typ` 可以刪除。
 
@@ -229,12 +229,12 @@ git commit -m "chore(tpl): replace typst-basic-zh with typst-ntulj"
 在你的論文專案根目錄執行：
 
 ```powershell
-git submodule update --remote --merge typst-ntulj
-git -C typst-ntulj submodule update --init --recursive
-git add typst-ntulj
-git commit -m "chore(tpl): update typst-ntulj submodule"
+git submodule update --remote --merge flamegold
+git -C flamegold submodule update --init --recursive
+git add flamegold
+git commit -m "chore(tpl): update flamegold submodule"
 ```
 
-第二行不可省略：`--remote` 只會把 `typst-ntulj` 本身移到最新版，不會讓其內的 `typst-basic-zh`、`citrus` 跟著切到新版所指定的 commit。第二行以 `-C typst-ntulj` 在模板資料夾內執行；若改在論文專案根目錄執行 `git submodule update`，且尚未 `git add typst-ntulj`，Git 會把 `typst-ntulj` 退回論文專案原本記錄的舊 commit。
+第二行不可省略：`--remote` 只會把 `flamegold` 本身移到最新版，不會讓其內的 `typst-basic-zh`、`citrus` 跟著切到新版所指定的 commit。第二行以 `-C flamegold` 在模板資料夾內執行；若改在論文專案根目錄執行 `git submodule update`，且尚未 `git add flamegold`，Git 會把 `flamegold` 退回論文專案原本記錄的舊 commit。
 
-本模板所用的 typst-basic-zh 版本由本 repo 固定。typst-basic-zh 更新後，若要讓論文跟進，應先在本 repo 更新 `typst-basic-zh` submodule 並提交，論文專案再依上述步驟更新 `typst-ntulj`；不要在論文專案裡直接進入 `typst-ntulj/typst-basic-zh/` 切換版本。
+本模板所用的 typst-basic-zh 版本由本 repo 固定。typst-basic-zh 更新後，若要讓論文跟進，應先在本 repo 更新 `typst-basic-zh` submodule 並提交，論文專案再依上述步驟更新 `flamegold`；不要在論文專案裡直接進入 `flamegold/typst-basic-zh/` 切換版本。

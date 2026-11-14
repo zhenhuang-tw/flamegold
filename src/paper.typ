@@ -13,7 +13,7 @@
 // path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
 #assert(
   sys.version >= version(0, 15, 0),
-  message: "ntulj: 需要 Typst 0.15 以上 / requires Typst 0.15 or later",
+  message: "flamegold: 需要 Typst 0.15 以上 / requires Typst 0.15 or later",
 )
 
 #import "../citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
@@ -173,9 +173,9 @@
 ) = {
   assert(
     type(bib) == path,
-    message: "ntulj: bib 請以 path() 傳入，例如 bib: path(\"ref.bib\") / pass bib as a path, e.g. bib: path(\"ref.bib\")",
+    message: "flamegold: bib 請以 path() 傳入，例如 bib: path(\"ref.bib\") / pass bib as a path, e.g. bib: path(\"ref.bib\")",
   )
-  assert(csl != none, message: "ntulj: 請傳入 csl: read(\"style.csl\") / pass csl: read(\"style.csl\")")
+  assert(csl != none, message: "flamegold: 請傳入 csl: read(\"style.csl\") / pass csl: read(\"style.csl\")")
 
   // 去除開頭的 UTF-8 BOM：Windows 上部分工具（如 Windows PowerShell 5.1 的
   // Out-File -Encoding utf8）會寫入 BOM，citrus 解析 JSON 時會因此失敗。
@@ -190,7 +190,7 @@
   let formats = ("csl-json", "biblatex", "hayagriva")
   assert(
     bib-format == auto or bib-format in formats,
-    message: "ntulj: bib-format 只接受 auto、\"csl-json\"、\"biblatex\"、\"hayagriva\" / bib-format must be auto, \"csl-json\", \"biblatex\" or \"hayagriva\"",
+    message: "flamegold: bib-format 只接受 auto、\"csl-json\"、\"biblatex\"、\"hayagriva\" / bib-format must be auto, \"csl-json\", \"biblatex\" or \"hayagriva\"",
   )
   let format = bib-format
   if format == auto {
@@ -201,12 +201,12 @@
     } else if data.contains(entry) {
       "biblatex"
     } else {
-      panic("ntulj: 無法判斷書目格式，請以 bib-format 指定 / cannot detect the bibliography format; set bib-format")
+      panic("flamegold: 無法判斷書目格式，請以 bib-format 指定 / cannot detect the bibliography format; set bib-format")
     }
   }
   assert(
     format != "hayagriva",
-    message: "ntulj: 目前不支援 Hayagriva YAML，因 citrus 只能解析 BibLaTeX 與 CSL-JSON；請改用這兩種格式 / Hayagriva YAML is not supported yet, because citrus only parses BibLaTeX and CSL-JSON",
+    message: "flamegold: 目前不支援 Hayagriva YAML，因 citrus 只能解析 BibLaTeX 與 CSL-JSON；請改用這兩種格式 / Hayagriva YAML is not supported yet, because citrus only parses BibLaTeX and CSL-JSON",
   )
   let init = if format == "csl-json" { init-csl-json } else { init-csl }
 

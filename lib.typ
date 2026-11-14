@@ -1,9 +1,9 @@
 // lib.typ
-// typst-ntulj 的入口檔：只匯出下列公開名稱，其餘皆為內部實作，日後可能變動。
-// Entry point of typst-ntulj: only the names below are public; everything else
+// flamegold 的入口檔：只匯出下列公開名稱，其餘皆為內部實作，日後可能變動。
+// Entry point of flamegold: only the names below are public; everything else
 // is internal and may change.
 //
-//   #import "typst-ntulj/lib.typ": *
+//   #import "flamegold/lib.typ": *
 //   #show: paper.with(bib: path("ref.bib"), csl: read("style.csl"), ...)
 
 // 主函式與引註函式 / Main function and citation functions
