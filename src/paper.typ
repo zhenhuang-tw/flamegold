@@ -195,12 +195,10 @@
   authors-en: (),
 
   // ── 頁首 / Running head ──
-  // 雙數頁頁首於頁碼後輸出的字串，例如期刊名稱 "臺大法學論叢"；none 則只輸出頁碼。
-  // auto 取 preset 的值：期刊 preset 為期刊名稱，泛用格式為 none。
-  // Text after the page number in even-page headers, e.g. the journal name; none
-  // prints the page number only. auto takes the preset's value: the journal name
-  // for a journal preset, none for the generic layout.
-  even-header: auto,
+  // 雙數頁頁首於頁碼後輸出的字串，例如課程名稱；none 則只輸出頁碼。preset 不設定此項。
+  // Text after the page number in even-page headers, e.g. the course name; none
+  // prints the page number only. Presets do not set it.
+  even-header: none,
 
   // ── 參考文獻 / Bibliography ──
   // 裁判原則上不列入參考文獻；設為 true 時，依語言列入各分組（中文裁判列於「其他」）。
@@ -230,7 +228,6 @@
 
   // preset 只提供預設值；明確傳入的參數優先 / A preset only supplies defaults; explicit parameters win
   let layout = resolve-preset(preset)
-  let even-header = if even-header == auto { layout.even-header } else { even-header }
   let bib-order = if bib-order == auto { layout.bib-order } else { bib-order }
   let bib-groups = ("en", "ja", "de", "fr", "other", "zh")
   assert(

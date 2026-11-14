@@ -103,13 +103,15 @@ Typst 內建的 Hayagriva YAML 格式目前**不支援**：本模板以 citrus �
 
 國科會《法學期刊引註格式凡例》是 TSSCI 一級法學期刊共通的引註格式，各刊差異不大，交由你傳入的 CSL 處理；`preset` 只處理版面。
 
-| `preset`        | 期刊               | 雙數頁頁首         |
-| --------------- | ------------------ | ------------------ |
-| `none`（預設）  | 泛用格式           | 只有頁碼           |
-| `"ntulj"`       | 《臺大法學論叢》   | 頁碼　臺大法學論叢 |
-| `"ntpu"`        | 《臺北大學法學論叢》 | 頁碼　臺北大學法學論叢 |
+| `preset`       | 模仿的期刊           |
+| -------------- | -------------------- |
+| `none`（預設） | 泛用格式             |
+| `"ntulj"`      | 《臺大法學論叢》     |
+| `"ntpu"`       | 《臺北大學法學論叢》 |
 
-preset 只提供預設值。參數表中預設為 `auto` 的參數（`even-header`、`bib-order`），明確傳入時一律優先，例如 `preset: "ntulj", even-header: "臺大法學論叢第 54 卷第 1 期"`，或 `even-header: none` 只輸出頁碼。
+preset 只提供預設值。參數表中預設為 `auto` 的參數（目前為 `bib-order`），明確傳入時一律優先。
+
+本模板供撰寫報告與論文之用，並非期刊的正式排版，因此 preset 不會在頁首放入期刊名稱；需要時請以 `even-header` 自行指定，例如課程名稱。
 
 各 preset 的差異：
 
@@ -139,7 +141,7 @@ preset 只提供預設值。參數表中預設為 `auto` 的參數（`even-heade
 | `title-en-thanks`、`subtitle-en` | 內容／`none`       | `none`  | 英文標題註解、英文副標題。                                                     |
 | `authors`                        | 字串／字典／陣列   | `()`    | 中文作者，寫法見下。                                                           |
 | `authors-en`                     | 字串／字典／陣列   | `()`    | 英文作者。不填則沿用 `authors`。                                               |
-| `even-header`                    | `auto`／字串／內容／`none` | `auto`  | 雙數頁頁首於頁碼後輸出的字串。`auto` 取 preset 的期刊名稱；`none` 只輸出頁碼。 |
+| `even-header`                    | 字串／內容／`none` | `none`  | 雙數頁頁首於頁碼後輸出的字串，例如課程名稱。不填則只輸出頁碼。                 |
 | `list-cases`                     | 布林值             | `false` | 是否將裁判列入參考文獻。                                                       |
 | `bib-order`                      | `auto`／陣列       | `auto`  | 參考文獻分組的順序，見〈引註與參考文獻〉。`auto` 取 preset 的順序。            |
 | `abstract-zh`、`abstract-en`     | 內容               | `[]`    | 中、英文摘要。留空則不輸出。                                                   |
@@ -310,7 +312,6 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
    | ------------------------------------- | ------------------------------------------------------ |
    | `#import "typst-ntulj/lib.typ": *`    | `#import "@local/flamegold:0.1.0": *`                  |
    | `#show: paper.with(…)`                | `#show: paper.with(preset: "ntulj", …)`，以維持原本的版面 |
-   | `even-header: "臺大法學論叢"`         | 使用 `preset: "ntulj"` 時可刪除                        |
 
 其他差異：交互參照 `@標籤` 改為輸出「壹、一」等層級路徑（舊版輸出 Typst 預設格式）；摘要與 Abstract 不再列入目錄；第六層標題編號為「①」。
 

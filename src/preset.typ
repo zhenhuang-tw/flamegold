@@ -15,8 +15,6 @@
 // The generic layout (preset: none), close to the publications of Taiwan's
 // leading law schools.
 #let generic = (
-  // 雙數頁頁首於頁碼後輸出的字串 / Text after the page number in even-page headers
-  even-header: none,
   // 中文摘要標題；none 時以一般無編號標題置中輸出，字型同其他標題
   // The Chinese abstract heading; none centers it as an ordinary unnumbered
   // heading, in the same font as the other headings
@@ -46,7 +44,6 @@
   // 《臺大法學論叢》/ National Taiwan University Law Journal
   ntulj: generic
     + (
-      even-header: "臺大法學論叢",
       abstract-title: text(font: font-kai, size: 13pt, weight: "regular", "<摘要>"),
       keywords: (label-font: font-kai, body-font: font-kai, hanging: true),
     ),
@@ -59,7 +56,6 @@
   // 9pt with a 12pt minimum line height; Chinese and Japanese references first.
   ntpu: generic
     + (
-      even-header: "臺北大學法學論叢",
       heading: (font: font-kai, weight: "regular", sizes: (18pt, 14pt)),
       footnote: (size: 9pt, line-height: 12pt),
       bib-order: ("zh", "ja", "en", "de", "fr", "other"),
