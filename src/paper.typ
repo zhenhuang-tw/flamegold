@@ -303,8 +303,13 @@
   }
 
   // ── 目錄（獨立一頁）/ Table of contents (own page) ──
-  // depth: 3 只收錄到「(一)」層 / depth: 3 stops at the "(一)" level
-  outline(indent: auto, depth: 3)
+  // depth: 3 只收錄到「(一)」層 / depth: 3 stops at the "(one)" level
+  // target 只查詢 outlined 的標題：參考文獻的分組標題在 context 中產生，若一併查詢，
+  // 查詢結果在五次排版內無法穩定，編譯時會出現 did not converge 警告。
+  // target queries outlined headings only: the bibliography group headings are made
+  // inside context, and querying them too keeps the query from stabilizing within
+  // five layout passes, which ends in a "did not converge" warning.
+  outline(indent: auto, depth: 3, target: heading.where(outlined: true))
 
   pagebreak()
 
