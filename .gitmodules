@@ -2,6 +2,3 @@
 	path = citrus
 	url = https://github.com/zhenhuang-tw/citeproc-typst.git
 	branch = ntu-adapted
-[submodule "typst-basic-zh"]
-	path = typst-basic-zh
-	url = https://github.com/zhenhuang-tw/typst-basic-zh.git

@@ -5,11 +5,11 @@
 // bilingual cover, abstracts, outline, note-style CSL citations, and a categorized bibliography.
 // lib.typ decides the public interface; documents should import lib.typ, not this file.
 //
-// 字體、行內樣式、註腳與標題編號沿用 typst-basic-zh 的 common.typ（submodule）。
-// Fonts, inline styles, footnotes and heading numbering come from common.typ in the
-// typst-basic-zh submodule.
+// 字體、行內樣式、註腳與標題編號沿用 yuhina 套件（@local/yuhina）。
+// Fonts, inline styles, footnotes and heading numbering come from the yuhina
+// package (@local/yuhina).
 
-#import "../typst-basic-zh/common.typ": *
+#import "@local/yuhina:0.1.0": *
 // path 型別自 Typst 0.15 起才有 / The path type requires Typst 0.15
 #assert(
   sys.version >= version(0, 15, 0),

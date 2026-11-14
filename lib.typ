@@ -3,13 +3,13 @@
 // Entry point of flamegold: only the names below are public; everything else
 // is internal and may change.
 //
-//   #import "flamegold/lib.typ": *
+//   #import "@local/flamegold:0.1.0": *
 //   #show: paper.with(bib: path("ref.bib"), csl: read("style.csl"), ...)
 
 // 主函式與引註函式 / Main function and citation functions
 #import "src/paper.typ": ncite, ncitef, paper
 
-// 行內樣式與字型，沿用 typst-basic-zh / Inline styles and fonts from typst-basic-zh
-#import "typst-basic-zh/common.typ": (
+// 行內樣式與字型，沿用 yuhina / Inline styles and fonts from yuhina
+#import "@local/yuhina:0.1.0": (
   font-fsong, font-hei, font-kai, font-song, font-yuan, inquote, keyword,
 )
