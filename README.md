@@ -24,38 +24,9 @@ git submodule update --init --recursive
 
 This repository has submodules of its own (`typst-basic-zh`, `citrus`), so `--recursive` is required. Without it, `typst-ntulj/typst-basic-zh/` and `typst-ntulj/citrus/` stay empty and compilation fails. Clone the paper project with `git clone --recurse-submodules` for the same reason.
 
-## Quick start
+## Usage
 
-```typ
-#import "typst-ntulj/ntulj.typ": *
-
-#show: project.with(
-  bib: "/ref.bib",                  // or "/references.json"
-  csl: read("law-journals-citation-guide.csl"),
-  title: "中小學生參與學校行政的保障",
-  authors: (name: "王小明", thanks: "國立臺灣大學法律學系碩士班學生。"),
-  abstract-zh: [...],
-  keywords-zh: "比例原則",
-  title-en: "Protection of Primary and High School Students’ Participation in School Administration",
-  abstract-en: [...],
-  keywords-en: "Proportionality",
-  even-header: "臺大法學論叢",       // optional
-)
-```
-
-`bib` is a path starting with `/`, which resolves against the project root; its extension decides the format: `.json` is CSL-JSON, anything else is BibTeX. A leading UTF-8 BOM is stripped. `csl` takes the contents of a note-style CSL file read by your document.
-
-Inside a footnote, cite with `#ncite("key", "5", prefix: "...", suffix: "...")` instead of `@key`, which would nest a footnote inside the footnote. `#ncitef(...)` takes the same arguments and is equivalent to `#footnote[#ncite(...)。]`; pass `period: "."` for English sources or `period: none` for no period.
-
-Running heads start on page 2: even pages show the page number and then `even-header` on the left; odd pages show `title` (without subtitle) and then the page number on the right. They use the sans-serif font at regular weight. The centered page number in the footer stays.
-
-The bibliography is grouped by language: 英文文獻, 中文文獻, 日文文獻, 德文文獻, 法文文獻, and 其他外文文獻 for any other language. 中文文獻 is further split by entry type into 專書 (`book`), 專書論文 (`incollection`), 期刊論文 (`article`), 未出版之學位論文 (`thesis`, `phdthesis`, `mastersthesis`), and 其他. Empty groups are omitted.
-
-The language comes from the entry's `language` field, e.g. `japanese`, `german`, `french`. Without it, titles containing Han characters count as Chinese and everything else as English, so Japanese entries must set `language`.
-
-## Inline styles
-
-Of the inline style functions in typst-basic-zh, this template exports only `keyword` and `inquote`. The note-only `very-keyword`, `hypo`, `thought`, and `rightNote` are not available.
+See the Chinese README, [README-zh.md](README-zh.md) as the full manual.
 
 ## Migrating from typst-basic-zh
 
@@ -67,7 +38,7 @@ Replace `#import "typst-basic-zh/academic-paper.typ": *` with `#import "typst-nt
 git submodule update --remote --merge typst-ntulj
 git -C typst-ntulj submodule update --init --recursive
 git add typst-ntulj
-git commit -m "chore(tpl): update typst-ntulj submodule"
+git commit -m "chore(tpl): update ntulj submodule"
 ```
 
 The second command checks out the versions of `typst-basic-zh` and `citrus` that the new `typst-ntulj` commit pins; `--remote` alone does not. Run it inside `typst-ntulj` as shown: a plain `git submodule update` in the project root, before `git add typst-ntulj`, would move `typst-ntulj` back to the commit the project still records.
