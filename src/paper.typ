@@ -304,7 +304,7 @@
 
   if abstract-zh != [] {
     v(1.5em)
-    heading(level: 1, numbering: none)[摘要]
+    heading(level: 1, numbering: none, outlined: false)[摘要]
     v(0.5em)
     abstract-zh
     if keywords-zh != none {
@@ -326,7 +326,7 @@
 
     if abstract-en != [] {
       v(1.5em)
-      heading(level: 1, numbering: none)[Abstract]
+      heading(level: 1, numbering: none, outlined: false)[Abstract]
       v(0.5em)
       pad(x: 2em)[
         #set text(size: 10pt)
