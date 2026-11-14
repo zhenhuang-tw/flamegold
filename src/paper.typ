@@ -266,10 +266,11 @@
   body
 
   // ── 參考文獻 / Bibliography ──
-  // 先依語言、中文文獻再依類型分組。沒有任何文獻的分組不輸出標題；
-  // 完全沒有引用時，整個參考文獻章節都不輸出。
-  // Grouped by language, and Chinese entries also by type. Groups without
-  // entries are omitted; with no citations at all, the whole section is omitted.
+  // 先依語言、中文文獻再依類型分組；外文文獻在前，中文文獻在後。沒有任何文獻的
+  // 分組不輸出標題；完全沒有引用時，整個參考文獻章節都不輸出。
+  // Grouped by language, foreign-language groups first and Chinese last, and
+  // Chinese entries also by type. Groups without entries are omitted; with no
+  // citations at all, the whole section is omitted.
   //
   // 語言取自 citrus：優先讀書目的 language 欄位（如 japanese、de、fr），
   // 沒有時，標題含漢字者視為中文，其餘視為英文。日文文獻因此必須填 language。
@@ -288,14 +289,15 @@
       ]
     }
 
-    // 語言分組及其順序 / Language groups, in output order
-    let lang-groups = (
+    // 外文分組及其順序；其後依序為其他外文文獻、中文文獻
+    // Foreign-language groups in output order, followed by other languages and then Chinese
+    let foreign-groups = (
       ("en", [英文文獻]),
-      ("zh", [中文文獻]),
       ("ja", [日文文獻]),
       ("de", [德文文獻]),
       ("fr", [法文文獻]),
     )
+    let known-langs = foreign-groups.map(g => g.at(0)) + ("zh",)
     // 中文文獻的類型分組，以 BibTeX 類型比對；CSL-JSON 的 book、chapter、
     // article-journal、thesis 會由 citrus 對應為 book、incollection、article、phdthesis。
     // Type groups for Chinese entries, matched on BibTeX types; citrus maps the
@@ -314,21 +316,19 @@
     // An unnumbered level-1 heading does not step the counter; reset it so the groups below restart at 一、 and (一)
     counter(heading).update(0)
 
-    for (lang, title) in lang-groups {
-      let items = entries.filter(e => e.lang == lang)
-      if lang != "zh" {
-        group(2, title, items)
-      } else if items.len() > 0 {
-        heading(level: 2, outlined: false, title)
-        for (type-title, types) in zh-type-groups {
-          group(3, type-title, items.filter(e => type-of(e) in types))
-        }
-        group(3, [其他], items.filter(e => type-of(e) not in zh-grouped-types))
-      }
+    for (lang, title) in foreign-groups {
+      group(2, title, entries.filter(e => e.lang == lang))
     }
-
     // 上列以外語言的文獻（例如韓文、義大利文）/ Entries in any other language
-    let known-langs = lang-groups.map(g => g.at(0))
     group(2, [其他外文文獻], entries.filter(e => e.lang not in known-langs))
+
+    let zh-items = entries.filter(e => e.lang == "zh")
+    if zh-items.len() > 0 {
+      heading(level: 2, outlined: false)[中文文獻]
+      for (type-title, types) in zh-type-groups {
+        group(3, type-title, zh-items.filter(e => type-of(e) in types))
+      }
+      group(3, [其他], zh-items.filter(e => type-of(e) not in zh-grouped-types))
+    }
   }
 }

@@ -105,21 +105,21 @@ authors: ((name: "何孝元", thanks: "國立臺北大學法律學系"), "蔡蔭
 #ncite(prefix: "可參照", "bibKey", "5", suffix: "之不同語境。")
 ```
 
-文末參考文獻依語言與類型分組。沒有文獻的分組不輸出；全文沒有任何引用時，整個參考文獻章節都不輸出：
+文末參考文獻依語言與類型分組，外文文獻在前、中文文獻在後。沒有文獻的分組不輸出；全文沒有任何引用時，整個參考文獻章節都不輸出：
 
 ```
 參考文獻
 一、英文文獻
-二、中文文獻
+二、日文文獻
+三、德文文獻
+四、法文文獻
+五、其他外文文獻           上列以外的語言
+六、中文文獻
   (一) 專書                 book、mvbook、collection
   (二) 專書論文             incollection
   (三) 期刊論文             article
   (四) 未出版之學位論文     thesis、phdthesis、mastersthesis
   (五) 其他                 其餘類型
-三、日文文獻
-四、德文文獻
-五、法文文獻
-六、其他外文文獻           上列以外的語言
 ```
 
 上例為所有分組都有文獻時的樣子；實際編號依有輸出的分組遞補。類型以 BibTeX 的 entry type 判斷（不分大小寫）；使用 CSL-JSON 時，citrus 會先把 `book`、`chapter`、`article-journal`、`thesis` 對應為 `book`、`incollection`、`article`、`phdthesis`。
