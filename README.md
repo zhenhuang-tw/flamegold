@@ -259,7 +259,7 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 
 `keyword`、`inquote` 的用法見 yuhina 的 [README](https://github.com/zhenhuang-tw/yuhina/blob/main/README.md)。
 
-標題編號沿用 yuhina，並多一層「①」：
+標題編號沿用 yuhina，共六層，第六層為「①」：
 
 | 寫法          | 編號             |
 | ------------- | ---------------- |
