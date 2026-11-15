@@ -4,7 +4,7 @@
 //
 // 引註格式由 CSL 處理；preset 只處理版面。
 
-#import "fonts.typ": font-hei, font-kai, font-song
+#import "@local/yuhina:0.1.0": font-hei, font-kai, font-song
 
 // 泛用格式（preset: none）
 #let generic = (

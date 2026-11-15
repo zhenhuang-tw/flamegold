@@ -2,7 +2,7 @@
 // 註腳：與 yuhina 的 footnote-style 相同（文內標籤黑體上標、頁底懸掛縮排），另可指定
 // 字級與固定行高，供 preset 使用。
 
-#import "fonts.typ": font-hei, font-song
+#import "@local/yuhina:0.1.0": font-hei, font-song
 
 // - size：註腳文字的字級；none 沿用 Typst 預設的註腳字級。
 // - line-height：行高，即相鄰兩行基線的距離，例如 12pt；none 沿用 yuhina 的行距。
