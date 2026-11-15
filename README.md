@@ -249,15 +249,15 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 
 `lib.typ` 只匯出下列名稱，其餘屬內部實作，日後可能變動：
 
-| 名稱                                                           | 用途                                     |
-| -------------------------------------------------------------- | ---------------------------------------- |
-| `paper`                                                        | 主函式                                   |
-| `ncite`、`ncitef`                                              | 腳註內引用、單一引用的腳註               |
-| `keyword`                                                      | 重點強調（原字體加粗）                   |
-| `inquote`                                                      | 行內引用（楷體）                         |
-| `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong` | 字型組合，替補字型同 yuhina              |
+| 名稱                                                           | 用途                        |
+| -------------------------------------------------------------- | --------------------------- |
+| `paper`                                                        | 主函式                      |
+| `ncite`、`ncitef`                                              | 腳註內引用、單一引用的腳註  |
+| `keyword`                                                      | 重點強調（原字體加粗）      |
+| `inquote`                                                      | 行內引用（楷體）            |
+| `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong` | 字型組合，替補字型同 yuhina |
 
-`keyword`、`inquote` 的用法見 yuhina 的 [README](https://github.com/zhenhuang-tw/yuhina/blob/main/README.md)。筆記專用的 `very-keyword`、`hypo`、`thought`、`right-note` 由 bluemagpie 提供，本模板不匯出。
+`keyword`、`inquote` 的用法見 yuhina 的 [README](https://github.com/zhenhuang-tw/yuhina/blob/main/README.md)。
 
 標題編號沿用 yuhina，並多一層「①」：
 
