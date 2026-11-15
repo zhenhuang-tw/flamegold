@@ -290,45 +290,6 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 
 頁首使用黑體、不加粗，10pt；英數字為 Arial（無襯線體）。單數頁只輸出主標題 `title`，不含副標題與標題註解；標題若有換行（`\` 或字串中的 `\n`），頁首只取換行前的第一行。頁尾置中頁碼與筆記相同，仍然保留。
 
-## 從舊版遷移
-
-### 原本以 submodule 使用 typst-ntulj
-
-本套件舊名 typst-ntulj，原以 Git submodule 加入論文專案。請依序處理：
-
-1. 依〈安裝〉安裝本套件與 yuhina。
-2. 在論文專案根目錄移除 submodule。最後一行是清理，可省略：
-
-   ```powershell
-   git submodule deinit -f typst-ntulj
-   git rm -f typst-ntulj
-   git commit -m "chore(tpl): replace typst-ntulj submodule with flamegold local package"
-   Remove-Item -Recurse -Force .git\modules\typst-ntulj
-   ```
-
-3. 修改文件：
-
-   | 原本                               | 改為                                                      |
-   | ---------------------------------- | --------------------------------------------------------- |
-   | `#import "typst-ntulj/lib.typ": *` | `#import "@local/flamegold:0.1.0": *`                     |
-   | `#show: paper.with(…)`             | `#show: paper.with(preset: "ntulj", …)`，以維持原本的版面 |
-
-其他差異：交互參照 `@標籤` 改為輸出「壹、一」等層級路徑（舊版輸出 Typst 預設格式）；目錄標題改為「目次」；摘要與 Abstract 不再列入目次；第六層標題編號為「①」。
-
-### 原本匯入 `typst-basic-zh/academic-paper.typ`
-
-1. 依〈安裝〉安裝本套件與 yuhina。
-2. 將 `#import "typst-basic-zh/academic-paper.typ": *` 改為 `#import "@local/flamegold:0.1.0": *`。主函式由 `project` 改名為 `paper`，並加上 `preset: "ntulj"`；`ncite`、`ncitef` 的參數不變。
-3. 若該專案只用來寫論文，可以移除原本的 `typst-basic-zh` submodule（步驟同上）。
-
-### 原本使用獨立的 `template_basicPaper.typ`
-
-1. 匯入路徑改為 `@local/flamegold:0.1.0`。
-2. 將 `project.with(...)` 改為 `paper.with(...)`，並加上 `bib: path("ref.bib")`（或 `path("references.json")`）、`csl: read("您的樣式.csl")` 與 `preset: "ntulj"`。
-3. 原專案資料夾中的 `template_basicPaper.typ` 可以刪除。
-
-差異：巢狀編號清單的第二層由 `1.` 改為 `(1)`；參考文獻不再重複列出英文文獻、分組編號從「一、」起算、空分組不輸出。
-
 ## License
 
 [MIT](LICENSE)
