@@ -23,7 +23,7 @@ Requirements, installation, usage, parameters, and examples are documented only 
 
 新細明體、標楷體與微軟正黑體是 Windows 隨附的商用字型，Linux 通常沒有；本模板不支援 macOS。缺少時，字型會依 yuhina 的降級清單改用可免費取得的字型：拉丁字母與數字用 Libertinus Serif（內文、楷體）與 Libertinus Sans（黑體），中文用 Noto Serif／Sans CJK TC、教育部標準楷書（`TW-MOE-Std-Kai`）等。完整清單與安裝建議見 yuhina 的[字型降級](https://github.com/zhenhuang-tw/yuhina#字型降級)。Libertinus Serif 由 Typst 內建，Libertinus Sans 則須自行安裝。
 
-使用替補字型時，Typst 仍會對找不到的首選字型顯示 `unknown font family` 警告，不影響輸出。
+使用替補字型時，Typst 仍會對找不到的首選字型顯示 `unknown font family` 警告，不影響輸出。編譯時依作業系統加上 `--input`，即只保留該環境的字型而不產生這些警告：Windows 用 `USE_WIN=1`，Linux 用 `USE_LINUX=1`（Linux 須已安裝 Libertinus Sans、Noto Serif／Sans CJK TC 與 TW-MOE-Std-Kai）。指令範例與細節見 yuhina 的[編譯指令](https://github.com/zhenhuang-tw/yuhina#編譯指令)。
 
 首次編譯時，Typst 會自動下載 `@preview/cuti` 與 `@preview/citegeist`。
 
@@ -88,8 +88,16 @@ junction 指向 clone 本身，所有文件下次編譯就會用到新版。若 
 ```
 
 ```powershell
-typst compile paper.typ
+# Windows
+typst compile paper.typ --input USE_WIN=1
 ```
+
+```sh
+# Linux
+typst compile paper.typ --input USE_LINUX=1
+```
+
+不加 `--input` 也能編譯，只是缺字型時會有警告。
 
 `bib` 請用 `path()` 包住書目檔的路徑。`path()` 在您的文件中解析路徑，所以相對路徑以您的文件所在資料夾為準，例如 `path("refs/ref.bib")`；若直接傳字串，路徑會改以套件所在資料夾為準而找不到檔案，因此模板只接受 `path`。
 
