@@ -21,15 +21,7 @@ Requirements, installation, usage, parameters, and examples are documented only 
 1. [Typst](https://github.com/typst/typst#installation) 0.15 以上（`bib` 參數使用 0.15 新增的 `path` 型別）。
 2. 建議安裝下列字型：Times New Roman、Arial、新細明體（`PMingLiU`）、標楷體（`DFKai-SB`）、微軟正黑體（`Microsoft JhengHei UI`）。Windows 皆已內建。
 
-新細明體、標楷體與微軟正黑體是 Windows 隨附的商用字型，macOS、Linux 通常沒有。缺少時，本模板依序改用下列字型，它們都可免費取得：
-
-| 用途         | 首選字型   | 替補字型（依序）                     |
-| ------------ | ---------- | ------------------------------------ |
-| 內文（明體） | 新細明體   | `Noto Serif TC`、`Noto Serif CJK TC` |
-| 黑體         | 微軟正黑體 | `Noto Sans TC`、`Noto Sans CJK TC`   |
-| 楷體         | 標楷體     | 教育部標準楷書（`TW-MOE-Std-Kai`）   |
-
-`Noto Serif TC`、`Noto Sans TC` 是 Google Fonts 發行的版本；名稱帶 `CJK` 者為同一字型的 Pan-CJK 版本，Typst web app 預裝的是後者與教育部標準楷書。
+新細明體、標楷體與微軟正黑體是 Windows 隨附的商用字型，Linux 通常沒有；本模板不支援 macOS。缺少時，字型會依 yuhina 的降級清單改用可免費取得的字型：拉丁字母與數字用 Libertinus Serif（內文、楷體）與 Libertinus Sans（黑體），中文用 Noto Serif／Sans CJK TC、教育部標準楷書（`TW-MOE-Std-Kai`）等。完整清單與安裝建議見 yuhina 的[字型降級](https://github.com/zhenhuang-tw/yuhina#字型降級)。Libertinus Serif 由 Typst 內建，Libertinus Sans 則須自行安裝。
 
 使用替補字型時，Typst 仍會對找不到的首選字型顯示 `unknown font family` 警告，不影響輸出。
 
@@ -263,9 +255,9 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 | `ncite`、`ncitef`                                              | 腳註內引用、單一引用的腳註               |
 | `keyword`                                                      | 重點強調（原字體加粗）                   |
 | `inquote`                                                      | 行內引用（楷體）                         |
-| `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong` | 字型組合，已含〈環境需求〉所列的替補字型 |
+| `font-song`、`font-hei`、`font-kai`、`font-yuan`、`font-fsong` | 字型組合，替補字型同 yuhina              |
 
-`keyword`、`inquote` 的用法見 yuhina 的 [README](https://github.com/zhenhuang-tw/yuhina/blob/main/README-zh.md)。筆記專用的 `very-keyword`、`hypo`、`thought`、`right-note` 由 bluemagpie 提供，本模板不匯出。
+`keyword`、`inquote` 的用法見 yuhina 的 [README](https://github.com/zhenhuang-tw/yuhina/blob/main/README.md)。筆記專用的 `very-keyword`、`hypo`、`thought`、`right-note` 由 bluemagpie 提供，本模板不匯出。
 
 標題編號沿用 yuhina，並多一層「①」：
 
