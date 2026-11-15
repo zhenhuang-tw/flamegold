@@ -279,7 +279,14 @@
   let authors-en-arr = normalize-authors(authors-en)
 
   // ── 中文封面頁 ──
-  title-block(title, title-thanks: title-thanks, subtitle: subtitle, authors: authors-arr)
+  title-block(
+    title,
+    title-thanks: title-thanks,
+    subtitle: subtitle,
+    authors: authors-arr,
+    font: layout.title.font,
+    weight: layout.title.weight,
+  )
 
   if abstract-zh != [] {
     v(1.5em)
@@ -304,6 +311,8 @@
       title-thanks: title-en-thanks,
       subtitle: subtitle-en,
       authors: if authors-en-arr.len() > 0 { authors-en-arr } else { authors-arr },
+      font: layout.title.font,
+      weight: layout.title.weight,
     )
 
     if abstract-en != [] {

@@ -13,6 +13,8 @@
   // 中文關鍵字：label-font、label-weight 用於「關鍵字：」，body-font 用於各關鍵字
   // （none 沿用內文字型）。各 preset 的關鍵字行一律凸排。
   keywords: (label-font: font-hei, label-weight: "bold", body-font: none),
+  // 文章標題（含副標題）：字型、粗細
+  title: (font: font-hei, weight: "bold"),
   // 標題：字型、粗細，以及第一層起各層的字級（未列出的層級沿用內文字級）
   heading: (font: font-hei, weight: "bold", sizes: ()),
   // 註腳：label-font 為註腳編號（內文的上標與頁底的編號）的字型；size、line-height 為
@@ -32,10 +34,11 @@
       footnote: (label-font: font-song, size: none, line-height: none),
     ),
   // 《臺北大學法學論叢》/ Taipei University Law Review
-  // 標題「壹、」為標楷體 18 級、「一、」為標楷體 14 級，其餘
-  // 標題為標楷體；引註為新細明體 9 級、最小行高 12pt；中日文參考文獻在前。
+  // 文章標題與各層標題皆為標楷體不加粗；標題「壹、」為 18 級、「一、」為 14 級，
+  // 其餘為內文字級；引註為新細明體 9 級、最小行高 12pt；中日文參考文獻在前。
   ntpu: generic
     + (
+      title: (font: font-kai, weight: "regular"),
       heading: (font: font-kai, weight: "regular", sizes: (18pt, 14pt)),
       footnote: (label-font: font-song, size: 9pt, line-height: 12pt),
       bib-order: ("zh", "ja", "en", "de", "fr", "other"),
