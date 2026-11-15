@@ -7,10 +7,9 @@
 
 #import "@local/yuhina:0.1.0": (
   document-style, figure-style, font-hei, font-kai, font-song, heading-style, list-style, normalize-authors, page-style,
-  par-style, plain-links, quote-style, text-style, title-block,
+  par-style, plain-links, quote-style, ref-style, text-style, title-block,
 )
 #import "footnote.typ": footnote-style
-#import "heading.typ": heading-numbering, ref-style
 #import "preset.typ": resolve-preset
 // path 型別自 Typst 0.15 起才有
 #assert(
@@ -232,7 +231,6 @@
   show: heading-style.with(font: layout.heading.font)
   // preset 的標題粗細；各層字級見摘要標題的規則之後
   show heading: set text(weight: layout.heading.weight)
-  show: heading-numbering // 第六層「①」
   show: ref-style
 
   // 論文段落：首行縮排、行距較寬
