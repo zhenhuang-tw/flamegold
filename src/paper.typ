@@ -7,7 +7,7 @@
 
 #import "@local/yuhina:0.1.0": (
   document-style, figure-style, font-hei, font-kai, font-song, heading-style, list-style, normalize-authors, page-style,
-  par-style, plain-links, quote-style, render-authors, text-style,
+  par-style, plain-links, quote-style, text-style, title-block,
 )
 #import "footnote.typ": footnote-style
 #import "heading.typ": heading-numbering, ref-style
@@ -91,27 +91,6 @@
   while kept.len() > 0 and kept.last() == [ ] { kept = kept.slice(0, -1) }
   kept.join()
 }
-
-// ============================================================
-// § 標題區塊
-// ============================================================
-// 與 yuhina 的 title-block 相同。
-#let title-block(title, title-thanks: none, subtitle: none, authors: ()) = align(center)[
-  #block(
-    text(font: font-hei, weight: 700, size: 1.75em)[
-      #title#if title-thanks != none and title-thanks != "" { footnote(title-thanks) }
-    ],
-  )
-
-  #if subtitle != none and subtitle != "" [
-    #v(0.5em)
-    #block(text(font: font-hei, weight: "bold", size: 1.25em, subtitle))
-  ]
-
-  #v(1em)
-
-  #render-authors(authors)
-]
 
 // ============================================================
 // § 關鍵字行
