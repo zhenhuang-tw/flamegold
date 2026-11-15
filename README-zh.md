@@ -1,5 +1,13 @@
 # flamegold
 
+> **Unofficial.** This is a personal project. It is not affiliated with or endorsed by any university, law school, or journal whose layout it imitates.
+
+A [Typst](https://typst.app/) template for Traditional Chinese law papers, modeled on the journals of Taiwan's law schools: bilingual cover, abstracts, outline, note-style CSL citations, and a bibliography grouped by language and type. A `preset` parameter picks the journal layout to imitate, such as `"ntulj"` (National Taiwan University Law Journal) or `"ntpu"` (Taipei University Law Review); without it, the template uses a generic layout. The name comes from the Taiwan flamegold rain tree.
+
+Requirements, installation, usage, parameters, and examples are documented only in Chinese below:
+
+---
+
 > **非官方**：本模板為個人製作，與所模仿的任何大學、法學院或期刊均無關，亦未經其認可。投稿前請以各期刊最新公布的撰稿格式為準。
 
 適用於 [Typst](https://typst.app/) 的繁體中文法學論文模板，版面仿臺灣頂尖大學法學院的期刊：中英封面、摘要、目次、腳註式 CSL 引註，以及依語言與類型分組的參考文獻。以 `preset` 參數選擇要模仿的期刊，目前支援《臺大法學論叢》（`"ntulj"`）與《臺北大學法學論叢》（`"ntpu"`）；不指定時為泛用格式。
@@ -328,3 +336,7 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 3. 原專案資料夾中的 `template_basicPaper.typ` 可以刪除。
 
 差異：巢狀編號清單的第二層由 `1.` 改為 `(1)`；參考文獻不再重複列出英文文獻、分組編號從「一、」起算、空分組不輸出。
+
+## License
+
+[MIT](LICENSE)
