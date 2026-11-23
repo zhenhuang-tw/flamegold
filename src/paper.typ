@@ -360,6 +360,9 @@
 
     let group(level, title, items) = if items.len() > 0 {
       heading(level: level, outlined: false, title)
+      // 各筆文獻凸排 2 字元，前後不加段落間距：段距等於行距，相鄰兩筆的間隔與
+      // 同一筆內換行相同。只作用於文獻本身，分組標題的間距不受影響。
+      set par(first-line-indent: 0em, hanging-indent: 2em, spacing: par.leading)
       for e in items [
         #e.rendered-body #e.ref-label
         #parbreak()
