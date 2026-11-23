@@ -290,7 +290,19 @@ citrus 以 citegeist 解析 BibTeX，而 citegeist 不認得 `@case`、`@jurisdi
 | `===== 標題`  | (1) 標題         |
 | `====== 標題` | ①標題            |
 
-目次只收錄到「(一)」層。
+目次預設收錄到「(一)」層，如果不想在目次欄位輸出該層級，但又想在 PDF 書籤裡保留它，可於 `#show: paper.with(` 行之前（如此才可以對模板生效）新增一行：
+
+```typ
+#show outline.entry.where(level: 3): none
+```
+
+更進一步的，若採下列寫法，可讓第三層「(一)」標題本身完全不列入目次，也就是輸出的目錄和 PDF 書籤都不會列出第三層。
+
+```typ
+#show heading.where(level: 3): set heading(outlined: false)
+```
+
+注意：因為目前模板呼叫 `outline()` 時，直接寫 `depth: 3`，可蓋過 `#set outline(depth: 2)` 規則，故您如果使用這樣的寫法，將不會發生作用。
 
 交互參照：在標題後加上標籤，內文以 `@標籤` 參照，會輸出完整層級路徑，例如 `見@issue` 輸出「見貳、一、(三)」；`@issue[本文]` 輸出「本文貳、一、(三)」。頁碼參照請寫 `#ref(<issue>, form: "page")`。
 
