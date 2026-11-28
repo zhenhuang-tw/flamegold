@@ -12,7 +12,7 @@ Requirements, installation, usage, parameters, and examples are documented only 
 
 適用於 [Typst](https://typst.app/) 的繁體中文法學論文模板，版面仿臺灣頂尖大學法學院的期刊：中英封面、摘要、目次、腳註式 CSL 引註，以及依語言與類型分組的參考文獻。以 `preset` 參數選擇要模仿的期刊，目前支援《臺大法學論叢》（`"ntulj"`）與《臺北大學法學論叢》（`"ntpu"`）；不指定時為泛用格式。
 
-排版規則、行內樣式、註腳與標題編號沿用 [yuhina](https://github.com/zhenhuang-tw/yuhina) 套件，因此與筆記套件 [bluemagpie](https://github.com/zhenhuang-tw/bluemagpie) 外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，以 Git 子模組（submodule）固定於 fork 的 `ntu-adapted` 分支，其中修正了腳註編號、引用頁範圍、姓名變數與 `shorttitle`。
+排版規則、行內樣式、註腳與標題編號沿用 [yuhina](https://github.com/zhenhuang-tw/yuhina) 套件，因此與筆記套件 [bluemagpie](https://github.com/zhenhuang-tw/bluemagpie) 外觀一致。引註使用 [citrus](https://typst.app/universe/package/citrus)，內嵌於 `lib/citrus`，取自 fork 的 `ntu-adapted` 分支，其中修正了腳註編號、引用頁範圍、姓名變數與 `shorttitle`；來源 commit 見 [`lib/citrus/VENDORED.md`](lib/citrus/VENDORED.md)。
 
 本套件的名稱 `flamegold` 得名於臺灣特有種臺灣欒樹（flamegold rain tree）。
 
@@ -34,14 +34,13 @@ Requirements, installation, usage, parameters, and examples are documented only 
 本套件與 yuhina 都尚未上架 Typst Universe，須安裝為本機套件（local package）。Typst 會在 `%APPDATA%\typst\packages\local\<名稱>\<版本>` 尋找本機套件。clone 本 repo 後執行 `install.ps1`，會為本套件與 yuhina 各建立一個指向 clone 的目錄連結（junction）；之後 clone 內容變動，不必重新複製。建立 junction 不需要系統管理員權限。
 
 ```powershell
-git clone --recurse-submodules https://github.com/zhenhuang-tw/flamegold.git
+git clone https://github.com/zhenhuang-tw/flamegold.git
 cd flamegold
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
 腳本的行為：
 
-- 若 `citrus` 子模組尚未取出（clone 時少了 `--recurse-submodules`），先執行 `git submodule update --init` 取出。
 - 在本 repo 旁邊的 `..\yuhina` 尋找 yuhina 的 clone；找不到就 clone 到那裡（需要 git）。已依 bluemagpie 的說明安裝過 yuhina 者，會沿用同一個 clone。
 - 從各自的 `typst.toml` 讀取套件名稱與版本來決定資料夾，不會對不上。
 - 可重複執行：已正確連結的會略過；該路徑上已有真實資料夾時會中止，不會刪除；已有指向別處的 junction 時，加上 `-Force` 才會替換（只移除 junction，不動它所指向的資料夾）。
@@ -53,12 +52,9 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 ### 更新
 
-在兩個 clone 內各執行 `git pull`；本 repo 另需更新 `citrus` 子模組，以取得新版所固定的 commit：
+在兩個 clone 內各執行 `git pull`。
 
-```powershell
-git pull
-git submodule update --init
-```
+從使用子模組的舊版更新時，`git pull` 不會刪除原本的 `citrus` 資料夾（可能提示 `unable to rmdir`）。本套件已改用 `lib/citrus`，該資料夾可直接刪除。
 
 junction 指向 clone 本身，所有文件下次編譯就會用到新版。若 `typst.toml` 的 `version` 提高（例如 0.2.0），再執行一次 `install.ps1` 即會建立新版本的 junction，並把文件中的 `@local/flamegold:0.1.0` 改為新版本。
 
