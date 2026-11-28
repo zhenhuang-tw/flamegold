@@ -2,7 +2,7 @@
 // 註腳：與 yuhina 的 footnote-style 相同（文內標籤黑體上標、頁底懸掛縮排），另可指定
 // 字級與固定行高，供 preset 使用。
 
-#import "@local/yuhina:0.1.0": font-hei, font-song
+#import "@preview/yuhina:0.1.0": font-hei, font-song
 
 // 移除註腳內文中「CJK 字元或全形標點之後」的換行空白。
 // 原始碼中 CJK 文字之間的換行會被 Typst 當成空白（typst#792），例如

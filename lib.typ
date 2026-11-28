@@ -8,4 +8,4 @@
 #import "src/paper.typ": ncite, ncitef, paper
 
 // 字型、行內引用與重點強調，皆沿用 yuhina 之設定（含替補字型），與 bluemagpie 一致
-#import "@local/yuhina:0.1.0": font-fsong, font-hei, font-kai, font-song, font-yuan, inquote, keyword
+#import "@preview/yuhina:0.1.0": font-fsong, font-hei, font-kai, font-song, font-yuan, inquote, keyword

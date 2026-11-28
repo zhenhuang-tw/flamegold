@@ -3,9 +3,9 @@
 // note 式 CSL 引註、分類參考文獻。
 // 公開介面由 lib.typ 決定；文件請匯入 lib.typ，不要直接匯入本檔。
 //
-// 排版規則、註腳、標題編號與字型（含替補字型）皆沿用 yuhina 套件（@local/yuhina）。
+// 排版規則、註腳、標題編號與字型（含替補字型）皆沿用 yuhina 套件（@preview/yuhina）。
 
-#import "@local/yuhina:0.1.0": (
+#import "@preview/yuhina:0.1.0": (
   document-style, figure-style, font-hei, font-kai, font-song, heading-style, list-style, normalize-authors, page-style,
   par-style, plain-links, quote-style, ref-style, text-style, title-block,
 )
