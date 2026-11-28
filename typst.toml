@@ -4,6 +4,6 @@ version = "0.1.0"
 entrypoint = "lib.typ"
 compiler = "0.15.0"
 authors = ["Zhen Huang <https://github.com/zhenhuang-tw>"]
-description = "Unofficial Typst template for papers in Taiwanese law journals"
+description = "Unofficial - Simulating the layout of law journals in Taiwan"
 repository = "https://github.com/zhenhuang-tw/flamegold"
 license = "MIT"
