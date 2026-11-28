@@ -17,7 +17,7 @@
   message: "flamegold requires Typst 0.15 or later.",
 )
 
-#import "../citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
+#import "../lib/citrus/lib.typ": csl-bibliography, get-cited-entries, init-csl, init-csl-json, multicite
 
 // ============================================================
 // § 腳註內引用指令（避免遞迴）

@@ -14,9 +14,6 @@ and creating a junction needs no administrator rights.
 yuhina is expected in a clone next to this repository (..\yuhina). If that
 folder does not exist, it is cloned there with git.
 
-flamegold loads citrus from its citrus submodule. If the submodule has not
-been checked out, the script runs git submodule update --init for it.
-
 Running the script again is safe: a junction that already points at the right
 clone is left alone. A real folder is never deleted.
 
@@ -126,21 +123,6 @@ if (-not (Test-Path -LiteralPath $YuhinaPath)) {
 }
 if ((Get-ManifestValue $YuhinaPath 'name') -ne 'yuhina') {
     throw "$YuhinaPath is not a yuhina clone (its typst.toml names another package)."
-}
-
-# The citrus submodule is empty when the repository was cloned without
-# --recurse-submodules; flamegold cannot compile without it.
-if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'citrus\lib.typ') -PathType Leaf)) {
-    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-        throw 'The citrus submodule is not checked out and git is not available. Install git, then run this script again.'
-    }
-    Write-Host 'checkout citrus submodule'
-    $previous = $ErrorActionPreference
-    $ErrorActionPreference = 'Continue'
-    git -C $PSScriptRoot submodule update --init --quiet citrus
-    $exitCode = $LASTEXITCODE
-    $ErrorActionPreference = $previous
-    if ($exitCode -ne 0) { throw 'git submodule update failed.' }
 }
 
 # yuhina first, because flamegold imports it.
