@@ -25,13 +25,13 @@ Requirements, installation, usage, parameters, and examples are documented only 
 
 使用替補字型時，Typst 仍會對找不到的首選字型顯示 `unknown font family` 警告，不影響輸出。編譯時依作業系統加上 `--input`，即只保留該環境的字型而不產生這些警告：Windows 用 `USE_WIN=1`，Linux 用 `USE_LINUX=1`（Linux 須已安裝 Libertinus Sans、Noto Serif／Sans CJK TC 與 TW-MOE-Std-Kai）。指令範例與細節見 yuhina 的[編譯指令](https://github.com/zhenhuang-tw/yuhina#編譯指令)。
 
-首次編譯時，Typst 會自動下載 `@preview/cuti` 與 `@preview/citegeist`。
+首次編譯時，Typst 會自動下載 `@preview/yuhina`、`@preview/cuti` 與 `@preview/citegeist`。
 
-> Typst web app 無法使用本機套件（`@local`），因此在 yuhina 與本套件上架 Typst Universe 前，請以本機的 Typst 編譯。
+> Typst web app 無法使用本機套件（`@local`），因此在本套件上架 Typst Universe 前，請以本機的 Typst 編譯。
 
 ## 安裝
 
-本套件與 yuhina 都尚未上架 Typst Universe，須安裝為本機套件（local package）。Typst 會在 `%APPDATA%\typst\packages\local\<名稱>\<版本>` 尋找本機套件。clone 本 repo 後執行 `install.ps1`，會為本套件與 yuhina 各建立一個指向 clone 的目錄連結（junction）；之後 clone 內容變動，不必重新複製。建立 junction 不需要系統管理員權限。
+本套件尚未上架 Typst Universe，須安裝為本機套件（local package）；yuhina 已上架，由 Typst 自動下載，不必另行安裝。Typst 會在 `%APPDATA%\typst\packages\local\<名稱>\<版本>` 尋找本機套件。clone 本 repo 後執行 `install.ps1`，會建立一個指向 clone 的目錄連結（junction）；之後 clone 內容變動，不必重新複製。建立 junction 不需要系統管理員權限。
 
 ```powershell
 git clone https://github.com/zhenhuang-tw/flamegold.git
@@ -41,22 +41,27 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 腳本的行為：
 
-- 在本 repo 旁邊的 `..\yuhina` 尋找 yuhina 的 clone；找不到就 clone 到那裡（需要 git）。已依 bluemagpie 的說明安裝過 yuhina 者，會沿用同一個 clone。
-- 從各自的 `typst.toml` 讀取套件名稱與版本來決定資料夾，不會對不上。
+- 從 `typst.toml` 讀取套件名稱與版本來決定資料夾，不會對不上。
 - 可重複執行：已正確連結的會略過；該路徑上已有真實資料夾時會中止，不會刪除；已有指向別處的 junction 時，加上 `-Force` 才會替換（只移除 junction，不動它所指向的資料夾）。
-- `-YuhinaPath` 指定 yuhina clone 的位置，`-PackageRoot` 指定本機套件目錄。
+- `-PackageRoot` 指定本機套件目錄。
 
 `-ExecutionPolicy Bypass` 只對這一次執行有效。Windows 用戶端預設的執行原則不允許執行 `.ps1`；若您已調整過，可直接執行 `.\install.ps1`。使用 PowerShell 7 時，將 `powershell` 換成 `pwsh`。
 
-安裝後，文件即可 `#import "@local/flamegold:0.1.0": *`。未安裝時，編譯會出現 `package not found (searched for @local/flamegold:0.1.0)`；少了 yuhina 則是 `@local/yuhina:0.1.0`。
+安裝後，文件即可 `#import "@local/flamegold:0.1.0": *`。未安裝時，編譯會出現 `package not found (searched for @local/flamegold:0.1.0)`。
 
 ### 更新
 
-在兩個 clone 內各執行 `git pull`。
+在 clone 內執行 `git pull`。yuhina 的版本由本套件指定，隨本套件更新。
 
 從使用子模組的舊版更新時，`git pull` 不會刪除原本的 `citrus` 資料夾（可能提示 `unable to rmdir`）。本套件已改用 `lib/citrus`，該資料夾可直接刪除。
 
 junction 指向 clone 本身，所有文件下次編譯就會用到新版。若 `typst.toml` 的 `version` 提高（例如 0.2.0），再執行一次 `install.ps1` 即會建立新版本的 junction，並把文件中的 `@local/flamegold:0.1.0` 改為新版本。
+
+舊版的 `install.ps1` 會為 yuhina 建立 `@local/yuhina` 的 junction。本套件已不再使用它；若 bluemagpie 等其他套件也不需要，可以下列指令刪除（`rmdir` 只會移除 junction，不影響 yuhina 的 clone）：
+
+```powershell
+cmd /c rmdir "$env:APPDATA\typst\packages\local\yuhina\0.1.0"
+```
 
 ## 快速開始
 
