@@ -1,24 +1,21 @@
 <#
 .SYNOPSIS
-Installs flamegold and yuhina as Typst local packages.
+Installs flamegold as a Typst local package.
 
 .DESCRIPTION
-Creates one directory junction per package under
-%APPDATA%\typst\packages\local\<name>\<version>, pointing at the clone, so that
-documents can import @local/flamegold:<version> and @local/yuhina:<version>.
+Creates a directory junction at
+%APPDATA%\typst\packages\local\<name>\<version>, pointing at this clone, so
+that documents can import @local/flamegold:<version>.
 
-The name and version come from each clone's typst.toml, so the junction folder
-always matches the manifest. Changes inside a clone take effect immediately,
+The name and version come from the clone's typst.toml, so the junction folder
+always matches the manifest. Changes inside the clone take effect immediately,
 and creating a junction needs no administrator rights.
 
-yuhina is expected in a clone next to this repository (..\yuhina). If that
-folder does not exist, it is cloned there with git.
+yuhina is not installed here: flamegold imports @preview/yuhina from Typst
+Universe, which Typst downloads on first compile.
 
 Running the script again is safe: a junction that already points at the right
 clone is left alone. A real folder is never deleted.
-
-.PARAMETER YuhinaPath
-Path of the yuhina clone. Default: a "yuhina" folder next to this repository.
 
 .PARAMETER PackageRoot
 Typst local package directory. Default: %APPDATA%\typst\packages\local.
@@ -33,7 +30,6 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 #Requires -Version 5.1
 [CmdletBinding()]
 param(
-    [string]$YuhinaPath,
     [string]$PackageRoot,
     [switch]$Force
 )
@@ -45,9 +41,6 @@ if (-not $PackageRoot) {
         throw 'APPDATA is not set. This script is meant for Windows; pass -PackageRoot to choose the directory.'
     }
     $PackageRoot = Join-Path $env:APPDATA 'typst\packages\local'
-}
-if (-not $YuhinaPath) {
-    $YuhinaPath = Join-Path (Split-Path -Parent $PSScriptRoot) 'yuhina'
 }
 
 # Reads a string value such as name = "x" from the [package] table of a clone's typst.toml.
@@ -107,26 +100,6 @@ function Install-TypstPackage {
     Write-Host "linked   @local/${name}:$version -> $src"
 }
 
-if (-not (Test-Path -LiteralPath $YuhinaPath)) {
-    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-        throw "yuhina was not found at $YuhinaPath and git is not available to clone it. Install git, or pass -YuhinaPath."
-    }
-    Write-Host "cloning  yuhina -> $YuhinaPath"
-    # Windows PowerShell 5.1 turns any stderr output of a native command into an error
-    # while $ErrorActionPreference is 'Stop', so check the exit code instead.
-    $previous = $ErrorActionPreference
-    $ErrorActionPreference = 'Continue'
-    git clone --quiet https://github.com/zhenhuang-tw/yuhina.git $YuhinaPath
-    $exitCode = $LASTEXITCODE
-    $ErrorActionPreference = $previous
-    if ($exitCode -ne 0) { throw 'git clone failed.' }
-}
-if ((Get-ManifestValue $YuhinaPath 'name') -ne 'yuhina') {
-    throw "$YuhinaPath is not a yuhina clone (its typst.toml names another package)."
-}
-
-# yuhina first, because flamegold imports it.
-Install-TypstPackage $YuhinaPath
 Install-TypstPackage $PSScriptRoot
 
 Write-Host 'Done.'
