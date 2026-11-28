@@ -10,11 +10,16 @@
 Typst Universe 上的套件無法使用 Git 子模組，因此改為直接複製。只保留執行時需要的
 `lib.typ`、`src/` 與 `LICENSE`；測試、範例、字型與文件網站請見原 repo。
 
-請勿直接修改這裡的檔案。要更新時，先在 fork 修改，再整個覆蓋：
+## 更新
 
+請勿直接修改這裡的檔案。要更新時，先在 fork 修改，再於 repo 根目錄執行這支腳本：
+
+<!-- 這串指令用來把 lib\citrus 更新成 fork 的最新版本，等於手動做 git submodule update 的工作。 -->
 ```powershell
-git clone -b ntu-adapted https://github.com/zhenhuang-tw/citeproc-typst.git $env:TEMP\citrus
-Remove-Item -Recurse -Force lib\citrus\src
-Copy-Item -Recurse $env:TEMP\citrus\src, $env:TEMP\citrus\lib.typ, $env:TEMP\citrus\LICENSE lib\citrus\ -Force
-git -C $env:TEMP\citrus rev-parse HEAD   # 把結果更新到上方的「來源 commit」
+powershell -ExecutionPolicy Bypass -File .\scripts\update-citrus.ps1
 ```
+
+腳本會自動改寫上方的上游版本與來源 commit，但不會替您 commit；請先以 `git status` 檢查，再自行 commit。
+細節（參數、錯誤時如何復原）見腳本開頭的說明，或執行 `Get-Help .\scripts\update-citrus.ps1 -Full`。
+
+上方兩行由腳本以文字比對改寫，修改這份檔案時請保留其格式。
